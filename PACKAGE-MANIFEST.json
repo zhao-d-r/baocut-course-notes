@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-23",
+  "generated_at": "2026-10-27",
   "files": [
     {
       "path": ".gitignore",
@@ -13,8 +13,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 9063,
-      "sha256": "fb99661b607e0ba0c5498008ae8444dca9a43b885e984ce84f66d11dd8765678"
+      "bytes": 10028,
+      "sha256": "a14e97dd4a366bb24ac420153fcf67d4de777986eadf47764d24a651f2b22fd5"
     },
     {
       "path": "docs/agent-setup.md",
@@ -57,19 +57,144 @@
       "sha256": "410ae5461697f35177a03303303c86713203051f31de4107e58aeb89057b311a"
     },
     {
+      "path": "examples/lecture-03-layered/README.md",
+      "bytes": 3360,
+      "sha256": "d5c261ee0bce299cf6ae65b5ff841bd001f469a649928facda9529dacee3d942"
+    },
+    {
+      "path": "examples/lecture-03-layered/build.py",
+      "bytes": 12304,
+      "sha256": "427753fd72a06809e207e085e6a05254ce6a85352d8435201ad1ac8de0b53996"
+    },
+    {
+      "path": "examples/lecture-03-layered/layer.json",
+      "bytes": 13117,
+      "sha256": "33829795f9040b7483dbaf0d6be981005e7a71bbdbfc0bffed1facec94f41056"
+    },
+    {
+      "path": "examples/lecture-03-layered/notes.json",
+      "bytes": 54290,
+      "sha256": "7230a56914b643ef6200164ae669003844a3965a9e26fbbdf9e5ce27f739d9a2"
+    },
+    {
+      "path": "examples/lecture-03-layered/review/answers.json",
+      "bytes": 6100,
+      "sha256": "0165c96b3d2fcf5cd85eada566fad6b38b38b61d41a0f9a13e9359f46bdc96e8"
+    },
+    {
+      "path": "examples/lecture-03-layered/review/fidelity-eval.json",
+      "bytes": 43209,
+      "sha256": "04fbe75cfafee36fe5e74fff23741be5cc5c68fa87ba8c9e1682e00bb773a5cf"
+    },
+    {
+      "path": "examples/lecture-03-layered/review/questions.json",
+      "bytes": 9141,
+      "sha256": "126b282ca85824419d11fbbf408c978dbb5206b406b37ca4fe2fdc0dbb46aab3"
+    },
+    {
+      "path": "examples/lecture-03-layered/visuals/map.svg",
+      "bytes": 2768,
+      "sha256": "78baaabcce235f473c295c7cb6f8918f000da129e4b5c9c46f6ac5c1163e8eca"
+    },
+    {
+      "path": "examples/lecture-03-layered/visuals/s01.svg",
+      "bytes": 2039,
+      "sha256": "581df7521762c4e60d393af3ea3de1a1f90170f5abe75dd3ae2c396310021dd1"
+    },
+    {
+      "path": "examples/lecture-03-layered/visuals/s02.svg",
+      "bytes": 3195,
+      "sha256": "bb3f61c3029cb9c44684f8e4e1cb4241b8a07773c1260e2cb1cf582006efdd2f"
+    },
+    {
+      "path": "examples/lecture-03-layered/visuals/s03.svg",
+      "bytes": 3387,
+      "sha256": "78bd84899f6c0b824f180934185cf493646d82809014a6e91444577c2885d861"
+    },
+    {
+      "path": "examples/lecture-03-layered/visuals/s04.svg",
+      "bytes": 2345,
+      "sha256": "0e8ed1e8994e20f00a1a91134b73f9b93df712f66f50a07094f72c28ea89a89e"
+    },
+    {
+      "path": "examples/lecture-03-layered/visuals/s05.svg",
+      "bytes": 3812,
+      "sha256": "06898a5d4e43d56633509fcb32c0e5ca44fbd74d796f0a5c1ece03ab2950b779"
+    },
+    {
+      "path": "examples/lecture-03-layered/visuals/s06.svg",
+      "bytes": 2821,
+      "sha256": "26772024ab5b8b5b9a0ca0144b3571e94f2040d48e41bcad360e774da47ff74a"
+    },
+    {
+      "path": "examples/lecture-03-layered/visuals/s07.svg",
+      "bytes": 2165,
+      "sha256": "4dea385ecdc157efb990e89d3fdef1eb047723d757c8bb1adae349dff06cf539"
+    },
+    {
+      "path": "examples/lecture-03-layered/visuals/s08.svg",
+      "bytes": 3143,
+      "sha256": "d0c44b5149b4b4f80032f77a8a8276d7b3f92025eff6ca1b4832a83243fdd1a7"
+    },
+    {
+      "path": "examples/lecture-03-layered/visuals/s10.svg",
+      "bytes": 2560,
+      "sha256": "321b3f3803f13861281dd102cf191829827820f6a05221f6bdc114f9e9195803"
+    },
+    {
+      "path": "examples/lecture-03-layered/visuals/s11.svg",
+      "bytes": 2417,
+      "sha256": "428b10fe3cd0f0c339009c24b5f0b07be4cbe6908ae039bbd5a718bbfebbdd89"
+    },
+    {
+      "path": "examples/lecture-03-layered/visuals/s12.svg",
+      "bytes": 2024,
+      "sha256": "ad7be55611942e1be11336285f0070566e9245540e48ca24aed4474aeacdae6e"
+    },
+    {
+      "path": "examples/lecture-03-layered/visuals/s13.svg",
+      "bytes": 2290,
+      "sha256": "f847e56bf964623d56197306ff76151165f5bbbdbae0b14656fc466d504b99f5"
+    },
+    {
+      "path": "examples/lecture-03-layered/visuals/s14.svg",
+      "bytes": 2430,
+      "sha256": "77f5881e4bc907aa8fc4a1b1b9bb580e05550040952bcc575a8b75a51672d9bf"
+    },
+    {
+      "path": "examples/lecture-03-layered/visuals/s15.svg",
+      "bytes": 2496,
+      "sha256": "32c5f380f298f49ff7d6a797d5ef06ed655e3b5292d2d1191b3395ee25b5c34d"
+    },
+    {
+      "path": "examples/lecture-03-layered/visuals/s16.svg",
+      "bytes": 2453,
+      "sha256": "9578d319e60737191d7c3c41b1a8d93ef73966a4ddf2e096279b1cee76055184"
+    },
+    {
+      "path": "examples/lecture-03-layered/visuals/s18.svg",
+      "bytes": 2398,
+      "sha256": "8af601cbee2e450cc6af65ebd378571791358a3cfa0f592ca7fa7de86b8416d7"
+    },
+    {
+      "path": "examples/lecture-03-layered/visuals/s19.svg",
+      "bytes": 2849,
+      "sha256": "e38092e29f2de863a4e2efad70ac40796a85c7f6137401ac3bfe5af97a96b4ad"
+    },
+    {
+      "path": "examples/lecture-03-layered/课堂笔记-分层样板.html",
+      "bytes": 4141172,
+      "sha256": "cdb0da567b8736c22c4848656b988b49b389ca8fa7ee6f9b112f3fc95f0a274b"
+    },
+    {
       "path": "examples/synthetic/notes.json",
-      "bytes": 2799,
-      "sha256": "c5624b16291f5b8b4a5aecfd663f68f51b09277839badfcd3fee05252f7950c5"
+      "bytes": 4195,
+      "sha256": "e0f1b8be62398d84dc0ca8609a1ec60d77552528de5fbcc202738a61f23dea55"
     },
     {
       "path": "examples/synthetic/preview.html",
-      "bytes": 28949,
-      "sha256": "f6edd98cb4770757f940517af168f8ce6dd0442d5c5c3f9a60ff57deb0f7b8d3"
-    },
-    {
-      "path": "examples/synthetic/reading-layout.json",
-      "bytes": 999,
-      "sha256": "6dee9e9156def03a0fdbf8f8f006373b5222d9751467edb5f1f96ab4d683570b"
+      "bytes": 41632,
+      "sha256": "32ac5dbeb45c0500a9ba6492b2afe8499d42c9923ae16f7bcd6d4285323629dc"
     },
     {
       "path": "examples/synthetic/synthetic-frame.png",
@@ -80,6 +205,16 @@
       "path": "examples/synthetic/transcript.json",
       "bytes": 733,
       "sha256": "c2d1d79d172db00b9639fc918f4054de7606ec6ffabce7fec43285776e40dc54"
+    },
+    {
+      "path": "examples/synthetic/visuals/map.svg",
+      "bytes": 1615,
+      "sha256": "c8639d703159cfc9618cd8db39b883d93f8eda288bb452e2b4ab3c677abcc4bb"
+    },
+    {
+      "path": "examples/synthetic/visuals/s01.svg",
+      "bytes": 3139,
+      "sha256": "241401591b7748e04b06bf0f7bed71f821fd80554c6f8e1fb5ac6e94b00c7f32"
     },
     {
       "path": "notes/lecture-01/课堂笔记.html",
@@ -113,13 +248,13 @@
     },
     {
       "path": "skills/baocut-course-notes/SKILL.md",
-      "bytes": 10870,
-      "sha256": "b88f476bc6467a0e059b952a670b5c974627d1f45c14cfcc7294a529c67cda98"
+      "bytes": 8211,
+      "sha256": "61f2e1137e118659d4b9a807183f91a201f7bdecc018d100fd897d77e45a8cce"
     },
     {
       "path": "skills/baocut-course-notes/agents/openai.yaml",
-      "bytes": 499,
-      "sha256": "5477f30724c9bb12ea015155c5ffa4c76138c0c539174dc467e066d7f9a7ef23"
+      "bytes": 530,
+      "sha256": "104757347c77f18788c1ed51123479308f231538451fc619481fdc4971d7383d"
     },
     {
       "path": "skills/baocut-course-notes/assets/editorial.css",
@@ -137,24 +272,44 @@
       "sha256": "e53d177b7ba77871aeb4e89f8f8857cecb17ded0177d074420c47544e2cc318a"
     },
     {
+      "path": "skills/baocut-course-notes/assets/layered.css",
+      "bytes": 2897,
+      "sha256": "e257c3bb296f76298411278c5779aaa0597947deea302fbe3dddce713e44cb05"
+    },
+    {
+      "path": "skills/baocut-course-notes/assets/layered.html",
+      "bytes": 1481,
+      "sha256": "b2ec0c1f288099d4559a55b530a882e543e7d5f97cafdd49e6bf208ae0360661"
+    },
+    {
+      "path": "skills/baocut-course-notes/assets/layered.js",
+      "bytes": 941,
+      "sha256": "f68d3fc1c505bf40992bc124b03f5c564b4755ebad6b6ddd7ae66dc85060d72e"
+    },
+    {
       "path": "skills/baocut-course-notes/assets/template.html",
       "bytes": 2804,
       "sha256": "4e7715e38f0530897e2d882f4d75e1d64dbff859fbc95ddfb0dfa88668f9b693"
     },
     {
       "path": "skills/baocut-course-notes/references/batch-recovery.md",
-      "bytes": 5754,
-      "sha256": "5a371a1817442cf14bee663fc959d81d890f1411f7a1f33b0299e9ae1f0b7109"
+      "bytes": 5900,
+      "sha256": "4bd43d521d5cde45772aa6472e0c3cc969eaabb54ab43a3c2f757af1eeae4773"
     },
     {
       "path": "skills/baocut-course-notes/references/contract.md",
-      "bytes": 6787,
-      "sha256": "944a51e032f1ea6867ce27195e7f6ca4c58f6ccd0dd1f6cfcd5ea5aac65c84ee"
+      "bytes": 6208,
+      "sha256": "c8323cdb70ec11b08128cc707841ff435a0a8a32e9b5245e4e5d54bb5dfe506a"
     },
     {
-      "path": "skills/baocut-course-notes/references/editorial-layout.md",
-      "bytes": 6692,
-      "sha256": "ce1f0f7ea8fe54e9cd700d5069d1ee3e746270a591642663501c399be3efa40a"
+      "path": "skills/baocut-course-notes/references/fidelity-eval.md",
+      "bytes": 6657,
+      "sha256": "b96ecd081a05824affa63781dcdb4b122956de80d8e39f227858afd6b2b32850"
+    },
+    {
+      "path": "skills/baocut-course-notes/references/layered-reading.md",
+      "bytes": 5527,
+      "sha256": "44805f3058c28613e60d736f0944d1c1946e85348e9e37f4509ca3ddc3dca44d"
     },
     {
       "path": "skills/baocut-course-notes/references/lessons.json",
@@ -163,28 +318,58 @@
     },
     {
       "path": "skills/baocut-course-notes/references/quality-delivery.md",
-      "bytes": 8177,
-      "sha256": "55547f932e0fb4373189ad6f86e89e6f386af691e04ce984a12d7b1e51b65fe5"
+      "bytes": 2674,
+      "sha256": "a3bcd820ccbdccb7a4f1d04ed64ce3a24363c16f5d1196df78dbee45cfdac7cd"
     },
     {
       "path": "skills/baocut-course-notes/references/reading-materials.md",
-      "bytes": 9662,
-      "sha256": "51b513ac578a5d4ac77239929a43e9f794b06715caffab194bcf5ab279c9a442"
+      "bytes": 9730,
+      "sha256": "0e2da9b9f3d7ab985dc8fc40b363b49733ca30e0d5aa98e9f8fde7cf3c70ee5a"
     },
     {
       "path": "skills/baocut-course-notes/references/traceability.md",
-      "bytes": 9548,
-      "sha256": "01f489faf7de4ce6edc15f7c4cd54cb516e8d397e158b5ce16848706e099db2e"
+      "bytes": 5719,
+      "sha256": "c9d092b2cfbb93fcee86f0543234b96a2247f9170700a4b964d7f3401316df64"
     },
     {
       "path": "skills/baocut-course-notes/references/visual-coverage.md",
-      "bytes": 4259,
-      "sha256": "118a4ff31a8a3ed0815b0cc5764b92df1730158d074590487887d2e321d254c3"
+      "bytes": 2659,
+      "sha256": "ad4ca8dde6f5a5c52b06e958f4b4a5a6a490c9370a5efec0033e607142d648b3"
+    },
+    {
+      "path": "skills/baocut-course-notes/scripts/check_html.py",
+      "bytes": 10017,
+      "sha256": "0bbc66dcfd9f14ee96424abd1e232eb97e5e08f0ca7b9ffc0f366e5279dcbbc9"
     },
     {
       "path": "skills/baocut-course-notes/scripts/course_notes.py",
-      "bytes": 16071,
-      "sha256": "1de4abde3012dcd8024916baa92fba751ace4ac1d8b3569170d689ed80d77b0a"
+      "bytes": 19734,
+      "sha256": "24ad4054214bee03c4e25bb9a43c07db388e8a7df249323d6fe7e1ee9cb83944"
+    },
+    {
+      "path": "skills/baocut-course-notes/scripts/fidelity_eval.py",
+      "bytes": 22521,
+      "sha256": "1ee00f655fe0338407cf1d9deee70e286a51df0aa329f6edbce66ec0332493c5"
+    },
+    {
+      "path": "skills/baocut-course-notes/scripts/frames.py",
+      "bytes": 6317,
+      "sha256": "69e68c4034beab8c6c56dac4c50d77b56952f25b0789d8151ddcbc725a4b90ae"
+    },
+    {
+      "path": "skills/baocut-course-notes/scripts/illustrate.py",
+      "bytes": 4694,
+      "sha256": "7be0d5c9e45173bd9743d70b525eee1f46c3818e2e6ddfdca7d165194c59765f"
+    },
+    {
+      "path": "skills/baocut-course-notes/scripts/layered.py",
+      "bytes": 16750,
+      "sha256": "8ebb1066186a9999a4fdd0a41ec56c546651c026f343400f5fdd65345404d277"
+    },
+    {
+      "path": "skills/baocut-course-notes/scripts/manifest.py",
+      "bytes": 9439,
+      "sha256": "a627216729b544cae45831d11df9c6b79ec5e8606b1cbadeead1aaac14b895e6"
     },
     {
       "path": "skills/baocut-course-notes/scripts/reading_layout.py",
@@ -192,9 +377,29 @@
       "sha256": "9a2ae167fdbab5d1a391d69f148d8976522d2e83627008d50b4c1ba84adb6744"
     },
     {
+      "path": "skills/baocut-course-notes/scripts/svgcard.py",
+      "bytes": 6128,
+      "sha256": "2890573197e977e3d82cbbd7ebfe57d571f7afb8d0770069e6a519fad7e640be"
+    },
+    {
       "path": "skills/baocut-course-notes/scripts/test_course_notes.py",
-      "bytes": 7243,
-      "sha256": "2d2daaddd9ddc3483c918372c7bfeee8c088a066d1e77a045600ecfde31afea7"
+      "bytes": 6608,
+      "sha256": "ed845b10b81b341088252d5af12f5bd0539746b33d5ffd92144c18252aae39e3"
+    },
+    {
+      "path": "skills/baocut-course-notes/scripts/test_layered.py",
+      "bytes": 6689,
+      "sha256": "b14c324d38805c4836f158aac09025cb82cfa86f4e08542425b9731275a7cddb"
+    },
+    {
+      "path": "skills/baocut-course-notes/scripts/test_manifest_and_eval.py",
+      "bytes": 7494,
+      "sha256": "8edf4b20c070bcf4b60a325a20755ec01d066b0535a63b432cec0c3b0bd9d5bc"
+    },
+    {
+      "path": "skills/baocut-course-notes/scripts/test_pipeline.py",
+      "bytes": 13549,
+      "sha256": "479832ff65f92f4590795fde30523b4c13c2175b237ed848b7bd5b1775bd23d2"
     },
     {
       "path": "skills/baocut-course-notes/scripts/test_reading_layout.py",
@@ -203,23 +408,13 @@
     },
     {
       "path": "skills/baocut-course-notes/scripts/test_trace_artifacts.py",
-      "bytes": 4468,
-      "sha256": "904525e40cf4c38616bf40e24088a2999862a6d6dce1087e80285391b51db461"
-    },
-    {
-      "path": "skills/baocut-course-notes/scripts/test_validate_image_audit.py",
-      "bytes": 3672,
-      "sha256": "2fb89efb74a250ca611a127171094df16acfb2a68c73d05ac5f8c8f0de164313"
+      "bytes": 3242,
+      "sha256": "5560ef400dc025255d92013ac334e3353063e1f337b55fa90bd17e94e9f125cd"
     },
     {
       "path": "skills/baocut-course-notes/scripts/test_validate_materials.py",
-      "bytes": 6664,
-      "sha256": "9ec42aad6f18a6f5c5f0746ad787a7ad6af6d362d73eaada3fdbe2ff8a237446"
-    },
-    {
-      "path": "skills/baocut-course-notes/scripts/test_validate_visual_coverage.py",
-      "bytes": 3165,
-      "sha256": "8fe46ab1e1d245cb360c9d2a98a23feedeb7cd0a5231d62ebec98c23445598ae"
+      "bytes": 6627,
+      "sha256": "dee5e92048d332cbd2c2667b1d952a3428f2c02bbece04073b21d5cde87ff8ff"
     },
     {
       "path": "skills/baocut-course-notes/scripts/trace_artifacts.py",
@@ -227,24 +422,14 @@
       "sha256": "78d11196269b91cc67a3c0a9b21900c39710b70c01d375d99df2eeb93dbe4be5"
     },
     {
-      "path": "skills/baocut-course-notes/scripts/validate_image_audit.py",
-      "bytes": 4223,
-      "sha256": "15ff44c879f1430399a0d53d24a359f0256ac36dfe24c48e989fb7144b46df99"
-    },
-    {
       "path": "skills/baocut-course-notes/scripts/validate_materials.py",
-      "bytes": 6810,
-      "sha256": "5478fe55b0135a5600988f87916cd2b4f53f8e0b0cab71b12fa0a2361dd13ba5"
+      "bytes": 6795,
+      "sha256": "ecdd9e7ce5f33da3243a223bd9efc601375a6adae0c7196703f129b83a3b9fe0"
     },
     {
       "path": "skills/baocut-course-notes/scripts/validate_reading_layout.py",
       "bytes": 774,
       "sha256": "299dfb32ca01f1ce84ee909d66a3d00d905a4c79d319c042a0534975571bcc30"
-    },
-    {
-      "path": "skills/baocut-course-notes/scripts/validate_visual_coverage.py",
-      "bytes": 6894,
-      "sha256": "3d060f295730cff57aa1b3990197b8279a9c700ca5f1c038bfba9d64032f8abd"
     },
     {
       "path": "tools/install_skill.py",
@@ -253,8 +438,8 @@
     },
     {
       "path": "tools/run_demo.py",
-      "bytes": 1696,
-      "sha256": "616e4f3e86ebcdc3a60e996596926ead967ca859a2fc5eb08512e5965d6da3e8"
+      "bytes": 1575,
+      "sha256": "288ed3c7d40767e437d21f2ecf3806ac3a02c292ff2372c83a45695612364480"
     },
     {
       "path": "tools/verify_package.py",

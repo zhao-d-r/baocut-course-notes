@@ -50,7 +50,7 @@ python3 tools/install_skill.py --dest ~/.codex/skills/baocut-course-notes
 ```text
 使用 $baocut-course-notes 整理我提供的 transcript.json。
 本次只做离线转写笔记，不下载、不转写新媒体。
-完整阅读每个分块，按真实主题写 notes.json 和 reading-layout.json，
+完整阅读每个分块，按真实主题写 notes.json（v3，含图解），
 生成单课 HTML，并如实列出未检查的视频、论文和设备范围。
 ```
 
@@ -75,14 +75,16 @@ python3 tools/install_skill.py --dest ~/.codex/skills/baocut-course-notes
 python3 skills/baocut-course-notes/scripts/course_notes.py chunks --input my-run/transcript.json --out my-run/chunks
 ```
 
-3. 你或 Agent 根据阅读结果编写 `my-run/notes.json` 和 `my-run/reading-layout.json`。参照[数据合同](skills/baocut-course-notes/references/contract.md)、[阅读布局](skills/baocut-course-notes/references/editorial-layout.md)及合成示例。`read_chunks`、审查状态不能由脚本冒填；布局 SHA 必须绑定实际 notes 字节。
+3. 你或 Agent 根据阅读结果编写 `my-run/notes.json`（v3：完整笔记、来源字段、每节一句话结论与 SVG 图解都在这一个文件里）。参照[数据合同](skills/baocut-course-notes/references/contract.md)、[分层阅读与图解](skills/baocut-course-notes/references/layered-reading.md)及合成示例。`read_chunks` 不能由脚本冒填。
 4. 渲染详细 HTML：
 
 ```sh
-python3 skills/baocut-course-notes/scripts/course_notes.py render --notes my-run/notes.json --index my-run/chunks/index.json --layout my-run/reading-layout.json --require-layout --out my-run/notes.html
+python3 skills/baocut-course-notes/scripts/course_notes.py render --notes my-run/notes.json --index my-run/chunks/index.json --out my-run/notes.html
 ```
 
-notes 修改后，先复核布局受影响的内容，再刷新 SHA 和渲染。图片必须在 run 目录内，格式为 PNG/JPEG/WebP；生成的 HTML 内嵌图片、样式和脚本，正文可离线读，外部来源链接仍需联网。
+5. 用 `scripts/fidelity_eval.py prepare` 生成评审包，交给**另一家模型**做[保真评测](skills/baocut-course-notes/references/fidelity-eval.md)（精度/召回），`merge` 汇总并计分，改稿后只复核变化条目；用 `scripts/manifest.py` 记录来源、阶段、问题与冻结版本（见[可追溯运行](skills/baocut-course-notes/references/traceability.md)）。
+
+原帧和讲义图必须在 run 目录内，格式为 PNG/JPEG/WebP，图解为 run 目录内的 SVG；生成的 HTML 内嵌图片、样式和脚本，正文可离线读，外部来源链接仍需联网。
 
 ## BaoCut 版本与第三方依赖
 
@@ -94,13 +96,14 @@ BaoCut 的应用内 `app-release.json` 可能滞后；本次它写 2.0.0 build 5
 
 ## 功能与文件
 
-- `skills/baocut-course-notes/`：完整 Skill，包含 27 个当前源文件。脚本和模板保持源文件字节，3 份文字/经验文件经过通用化处理。
+- `skills/baocut-course-notes/`：完整 Skill，包含 37 个源文件。
+- `examples/lecture-03-layered/`：第3课分层样板。完整笔记逐字迁移自 `notes/lecture-03/课堂笔记.html`，新增课程地图与 17 张图解，并把正文里的证据边界说明逐句移到“核对与边界”小字，附独立精度/迁移召回评测；`python3 examples/lecture-03-layered/build.py` 可重建并做迁移校验。
 - `examples/synthetic/`：原创合成输入、布局、示意图及静态预览。
 - `tools/`：离线演示、拒绝覆盖的 Skill 安装工具及包校验工具。
 - `docs/source-manifest.json`：当前源快照及分享副本 SHA-256，不含个人路径。
 - `docs/validation.md`：实际测试和未测范围；`PACKAGE-MANIFEST.json` 是包内文件校验清单。
 
-原功能包括 `chunks/render/record/remember`、布局校验、材料阅读台账校验、图片审查、视频覆盖和依赖快照追踪。`remember` 只在使用者明确授权时调用；它不会因生成笔记而自动执行。本包测试中的相关写入仅发生在临时测试目录。
+功能包括 `chunks/scaffold/validate/render`（v3 骨架、一次列出全部问题的校验、分层页面；v2 + reading-layout 仍兼容）、`frames.py`（换页检测、联系表与精确截帧）、`illustrate.py` / `svgcard.py`（手绘信息图提示词与 SVG 卡片）、`check_html.py`（离线与 headless Chrome 页面检查）、`manifest.py`（来源、依赖、阶段日志、问题与哈希链版本）、`fidelity_eval.py`（外部模型评审包、逐条哈希增量复核与计分）、材料阅读台账校验，以及只读核对旧 run 快照的 `trace_artifacts.py`。
 
 运行原有测试：
 
@@ -108,7 +111,7 @@ BaoCut 的应用内 `app-release.json` 可能滞后；本次它写 2.0.0 build 5
 python3 -B -m unittest discover -s skills/baocut-course-notes/scripts -p 'test_*.py' -v
 ```
 
-本次基于当前源的 69 项测试通过。检查的是结构、哈希绑定、输入拒绝和渲染行为，不能证明任意真实课程内容完整或准确。
+2026-10-27 精简流程版本的 83 项测试通过（无 ffmpeg 时跳过 1 项选帧测试）。检查的是结构、覆盖、版本链、评测计分和渲染行为，不能证明任意真实课程内容完整或准确；内容保真靠保真评测。
 
 ## 版权与分享边界
 

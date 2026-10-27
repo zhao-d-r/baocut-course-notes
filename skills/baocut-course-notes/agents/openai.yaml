@@ -1,6 +1,6 @@
 interface:
   display_name: "BaoCut 课堂笔记与课程整理"
-  short_description: "结合转写、视频画面及推荐论文制作完整课堂笔记，支持批量恢复和离线单课交付"
-  default_prompt: "使用 $baocut-course-notes 整理完整课程笔记，复用转写并核对视频画面，实际阅读相关推荐材料及论文，将方法、实验与边界补入正文，按课交付离线 HTML，并记录真实阅读和复核范围。"
+  short_description: "把课程视频整理成课程地图 + 图解卡片 + 可展开完整笔记的离线 HTML，并用精度/召回评测证明保真"
+  default_prompt: "使用 $baocut-course-notes 整理课程笔记：复用转写并核对视频画面，写可回查来源的完整笔记，为关键知识点画图解，按课交付离线 HTML，由独立评审做精度/召回评测，并如实报告分数与缺口。"
 policy:
   allow_implicit_invocation: true

@@ -54,7 +54,7 @@ def validate(data, root):
                 if video.get(field) != value:
                     errors.append(f'{ident}: video {field} not complete')
             artifacts = video.get('artifacts', {})
-            for key in ['transcript', 'read_coverage', 'visual_coverage', 'image_audit', 'review']:
+            for key in ['transcript', 'read_coverage', 'manifest', 'fidelity_eval']:
                 artifact = artifacts.get(key, {})
                 artifact_path = root / artifact.get('path', '')
                 if not artifact_path.is_file() or artifact.get('sha256') != sha(artifact_path):

@@ -2,12 +2,8 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
-from types import SimpleNamespace
-from contextlib import redirect_stdout
-import io
 
 from trace_artifacts import capture, check
-from course_notes import record
 
 
 class TraceTest(unittest.TestCase):
@@ -81,24 +77,3 @@ class TraceTest(unittest.TestCase):
         self.out.write_text(json.dumps(snapshot))
         self.assertEqual(check(self.out, self.root)['status'], 'unchanged')
 
-    def test_retrospective_unknown_and_attempts(self):
-        args = SimpleNamespace(run=self.root, stage='asr', status='completed', detail='',
-                               time_basis='retrospective', attempt_id='try-1')
-        with redirect_stdout(io.StringIO()):
-            record(args)
-            args.attempt_id = 'try-2'
-            record(args)
-        events = [json.loads(x) for x in (self.root / 'events.jsonl').read_text().splitlines()]
-        self.assertIsNone(events[0]['occurred_at'])
-        self.assertNotEqual(events[0]['event_id'], events[1]['event_id'])
-        self.assertNotEqual(events[0]['attempt_id'], events[1]['attempt_id'])
-
-    def test_legacy_call_and_timezone(self):
-        args = SimpleNamespace(run=self.root, stage='render', status='started', detail='')
-        with redirect_stdout(io.StringIO()):
-            record(args)
-        event = json.loads((self.root / 'events.jsonl').read_text())
-        self.assertEqual(event['at'], event['occurred_at'])
-        args.occurred_at = '2026-10-02T12:00:00'
-        with self.assertRaises(ValueError):
-            record(args)

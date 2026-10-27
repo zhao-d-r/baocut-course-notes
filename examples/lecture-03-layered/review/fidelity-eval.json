@@ -1,0 +1,797 @@
+{
+  "schema_version": 1,
+  "notes_sha256": "7230a56914b643ef6200164ae669003844a3965a9e26fbbdf9e5ce27f739d9a2",
+  "sources": {
+    "precision_basis": "2026-10-22 交付版笔记全文（已对照原始转写核验过的旧版）",
+    "visual_inputs": "visuals/*.svg 的文字与图形"
+  },
+  "precision": {
+    "reviewer": "independent_agent",
+    "method": "Extracted every <text>/<title> and the geometry of each SVG and checked them against the section's body, caveat, editor notes, supplements and captions. Compared the 20 takeaways with the paragraphs. Ran a script to diff each of the 44 caveated paragraphs (old text vs new body+caveat) for lost text, then read each body alone to see whether demoting the hedge made it overstate.",
+    "items": [
+      {
+        "ref": "map",
+        "verdict": "supported",
+        "evidence": "map.svg 四框+箭头：指标与图形§1–6『基本面定做什么，指标定何时』(s1:p2)、两类策略§7–11『趋势跟随要快，均值回归要准』(s7:p1)、困境反转与三招§12–14『错位·萌芽趋势·极值＋催化剂』(s20:p0)、时间框架与纪律§15–20『先定拿多久，仓位分篮子』(s16:p1, s18:p0)。节号范围与目录一致。",
+        "note": ""
+      },
+      {
+        "ref": "s1:visual",
+        "verdict": "supported",
+        "evidence": "重生成的 s01.svg：标题改为『技术指标只辅助安排进出时机；离场还看盈亏与仓位』，框内『技术指标：辅助安排进出时机』。与 s1:p2 和 s1:takeaway『进出时机』一致；其余框不变，均有依据。",
+        "note": "",
+        "recheck": true
+      },
+      {
+        "ref": "s2:visual",
+        "verdict": "supported",
+        "evidence": "重生成的 s02.svg：MA200 框为『讲师解释（无统计）：站上/跌破 MA200 看作多空偏好的分界』，与 s2:p3 及其边界一致；交叉曲线已标『示意』；标题注明『MA200 分多空是讲师解释』。三条均线的标签和金叉/死叉定义不变，正确。",
+        "note": "",
+        "recheck": true
+      },
+      {
+        "ref": "s3:visual",
+        "verdict": "supported",
+        "evidence": "s03.svg 标尺按比例：0/20/30/70/80/100 的 x 坐标与数值线性对应；『低于20可能短线反弹』『高于80可能回落』『基本面已看空时增强做空信心』(s3:p1)；RSI14 波段讲师偏好、RSI7 更敏感偏短线 (s3:p0)；RSI2 讲师已不用 (s3:p2)；30/70 标为外部资料 (x0)；『极值≠反转已经发生』(s3:n0)。",
+        "note": ""
+      },
+      {
+        "ref": "s4:visual",
+        "verdict": "supported",
+        "evidence": "s04.svg：z-score 单位标准差、离均值几个σ、做多盼负向极值/做空偏好正向大偏离 (s4:p0)；ATR 真实波幅平滑、只量波动不指方向 (x1)；本课用作止损尺度、没给统一 ATR 止损倍数 (s4:p2+边界)；『两把尺子不能混用』(s4:p2『ATR尺度与标准差尺度不同』, s4:takeaway)。",
+        "note": ""
+      },
+      {
+        "ref": "s5:visual",
+        "verdict": "supported",
+        "evidence": "最终复核 s05.svg：底框为『但他当时看油价可能到 100／当时不认为有必要立刻做空』，标题为『…但他当时看油价还有上行空间，不认为有必要立刻做空』，与 s5:p1『自己当时估计油价仍有上行空间、甚至可能到100，因此并不认为立刻做空XLE有必要』一致，不再断言他实际没做空。『讲师称』、『示意，非原图数据』和『原图为 2h AVWAP_SD，σ 口径未核实』都还在；两段逆向时点的判断也都署了讲师名。没有发现新问题。",
+        "note": "",
+        "recheck": true
+      },
+      {
+        "ref": "s6:visual",
+        "verdict": "supported",
+        "evidence": "重生成的 s06.svg：V 形部分改为『讲师经验：急变后往往还会回踩／所以他等回踩，不追第一下／期权持仓怕回踩，他通常规避』，与 s6:p2 一致；两块都标了『示意』，V 形写明『示意：急跌后急涨』（只是方向示例，不再暗示定义只有一个方向）；MA200 加了标签。矩形条件不变，正确。",
+        "note": "",
+        "recheck": true
+      },
+      {
+        "ref": "s7:visual",
+        "verdict": "supported",
+        "evidence": "s07.svg：趋势跟随=惯性·右侧·要快·尽早识别跟上浪潮；均值回归=引力·左侧·要准＋耐心·扛住继续逆向的波动 (s7:p1)；『选一种为主 · 讲师以均值回归为主』(s7:p0)。没有画『有且只有两种』的穷尽说法，符合 s7:p2 的边界。",
+        "note": ""
+      },
+      {
+        "ref": "s8:visual",
+        "verdict": "supported",
+        "evidence": "s08.svg 流程：识别突破（基本面拐点·仓位＋技术辅助, s8:p0）→及时建仓不等完美点位 (s8:p3)→事先定好仓位与止损→回撤时『触发止损？是：退出／否且理由仍在：拿住』(s8:p4『达到止损条件就退出；未触发且原趋势理由仍在，则避免被日常波动甩下车』)；『事后看图容易，当时分不清』(s8:p4)。没有给止损距离，也没把触发止损等同于假突破，符合边界。",
+        "note": ""
+      },
+      {
+        "ref": "s10:visual",
+        "verdict": "supported",
+        "evidence": "重生成的 s10.svg：底框改为『讲师经验：不等二、三名补涨补跌』『龙头不必是最大或最有名』，与 s10:p0（个人经验）、s10:p1『不必等于规模最大…』及 s10 takeaway（名气）一致。航空例不变，正确。",
+        "note": "",
+        "recheck": true
+      },
+      {
+        "ref": "s11:visual",
+        "verdict": "supported",
+        "evidence": "最终复核 s11.svg：标题为『均值回归的风险包括看错方向和进得太早：…』，与 s11:p1 列出的两类风险一致。图内文字不变：✗ 沿亏损仓位不断补仓、NVO 止损再入场三步（s11:p1）、讲师承认常接飞刀即进得太早、跌得多≠已到底（s11:p2）。没有发现新问题。",
+        "note": "",
+        "recheck": true
+      },
+      {
+        "ref": "s12:visual",
+        "verdict": "supported",
+        "evidence": "s12.svg：『股价跌幅 自52周高点至少跌一半』『估值倍数 处于5–10年甚至20年低位 如EV/EBITDA(NTM)』『两个条件都要』『比倍数，不比二十年前的股价』(s12:p0,p1)。『至少』『甚至』都保留了。图里没有画业务困境与修复判断（s12:p0,p3），只是省略，不算失真。",
+        "note": ""
+      },
+      {
+        "ref": "s13:visual",
+        "verdict": "supported",
+        "evidence": "s13.svg：①自52周高点跌≥50% ②长期估值历史低位 ③有具体催化剂 → 三者齐备才进入 (s13:p1, s13:f1『结合前页股价跌幅形成三条件』, s13:p1『没有催化剂…他也不愿进入』)；催化剂例 NVO口服减重药 (s13:p2)、FISV激进投资人入场 (s13:p3)；『说不清催化剂→放弃』(s13:p4)。",
+        "note": ""
+      },
+      {
+        "ref": "s14:visual",
+        "verdict": "supported",
+        "evidence": "s14.svg：第一招 仓位导致的价格错位·均值回归·例PG (s14:p0,p1)；第二招 趋势刚萌芽就跟随·右侧趋势跟随·例SMH (s14:p2)；第三招 历史极值区提前布局·偏左侧·等催化剂 (s14:p3)；『共同点：先说清价格为何会变，再选顺势或逆向入场』与 s14:takeaway（整理者提炼）一致，属整理者归纳。",
+        "note": ""
+      },
+      {
+        "ref": "s15:visual",
+        "verdict": "supported",
+        "evidence": "s15.svg：空头持仓遇强反弹；当时看起来一样，结果一次持续上涨、另一次涨两三天又回落 (s15:p2『讲师事后说』)；『答案不在这根K线里』『这笔交易的时间框架？什么情况算逻辑失效？』(s15:p3)。",
+        "note": ""
+      },
+      {
+        "ref": "s16:visual",
+        "verdict": "supported",
+        "evidence": "s16.svg：短线日内至约1周、波段1–8周、长线3个月以上 (s16:p0)；『1–3个月之间没有严格分界』(s16:p0边界)；入场前先定拿多久，再配策略、标的、止盈止损 (s16:p1,p3)；『讲师倾向非专职者做波段/长线』(s16:p2)；『不是永久持有的借口』(s16:p3)。",
+        "note": ""
+      },
+      {
+        "ref": "s18:visual",
+        "verdict": "supported",
+        "evidence": "s18.svg：长期篮子偏困境反转·期权约12个月以上·不放空头 (s18:p0,p1,p3)；波段篮子趋势跟随＋仓位扭曲的均值回归·期权约6–9个月 (s18:p0,p1)；『合约到期≠实际持有期』『远期合约不会自动带来纪律或阻止亏损』(s18:p1)；『先分篮子，减少临场冲突』(s18:p2)。12个月是本节口述，和 s19 课件页的9个月之差由 s19:p0 交代。",
+        "note": ""
+      },
+      {
+        "ref": "s19:visual",
+        "verdict": "supported",
+        "evidence": "重生成的 s19.svg：低β移到两框之外，写作『两类期权交易都尽量选低 β 标的』，与 s19:p3『期权交易尽量选择低β标的』一致；长期框注明『LEAPS 9 个月以上（上节口述 12 个月）』，与 s19:p0 边界一致；条形比例 60/33/7% 不变，『非推荐』保留。",
+        "note": "",
+        "recheck": true
+      },
+      {
+        "ref": "s1:takeaway",
+        "verdict": "supported",
+        "evidence": "s1:p2（拐点/仓位/板块轮换定标的，技术分析辅助入场，离场另看盈亏和仓位）, s1:p3（少数熟悉的指标）。",
+        "note": ""
+      },
+      {
+        "ref": "s2:takeaway",
+        "verdict": "supported",
+        "evidence": "s2:p0–p3 均线作短/中/长期参考和支撑阻力；后半句『交叉本身不保证行情延续』是整理者加的提醒，与 s2:p3 边界（无统计）一致，没有归给讲师。",
+        "note": ""
+      },
+      {
+        "ref": "s3:takeaway",
+        "verdict": "supported",
+        "evidence": "s3:p2『参数必须与持有周期相匹配』, s3:p1（RSI>80 配合基本面看空）, s3:n0『不等于反转已经发生』。",
+        "note": ""
+      },
+      {
+        "ref": "s4:takeaway",
+        "verdict": "supported",
+        "evidence": "s4:p0（标准差偏离）, s4:p2『ATR尺度与标准差尺度不同』, x1。",
+        "note": ""
+      },
+      {
+        "ref": "s5:takeaway",
+        "verdict": "supported",
+        "evidence": "s5:p1（高位运行一个多月、刚突破就做空可能过早）, s5:n0（2h AVWAP_SD，不能直接证明是200日SMA±σ）。",
+        "note": ""
+      },
+      {
+        "ref": "s6:takeaway",
+        "verdict": "supported",
+        "evidence": "s6:p0 矩形突破的筛选条件, s6:p2 V形等回踩、通常规避。",
+        "note": ""
+      },
+      {
+        "ref": "s7:takeaway",
+        "verdict": "supported",
+        "evidence": "s7:p0『根据自己的个性确定一种主策略』, s7:p1（快 vs 准与耐心、心理干扰）。",
+        "note": ""
+      },
+      {
+        "ref": "s8:takeaway",
+        "verdict": "supported",
+        "evidence": "s8:p3（及时行动）, s8:p4（预先设置仓位和止损）。",
+        "note": ""
+      },
+      {
+        "ref": "s9:takeaway",
+        "verdict": "supported",
+        "evidence": "s9:p0（追涨得最快的标的）, s9:p3『风险大、末段行情更需要快』。",
+        "note": ""
+      },
+      {
+        "ref": "s10:takeaway",
+        "verdict": "supported",
+        "evidence": "s10:p1『龙头指下跌方向的领跌者，不必等于规模最大…』, s10:p2『先明确方向与强弱标准』。",
+        "note": ""
+      },
+      {
+        "ref": "s11:takeaway",
+        "verdict": "supported",
+        "evidence": "s11:p1（进入太早、底部还在下移）, s11:p2（永久价值损失，不能推出必定回归）。",
+        "note": ""
+      },
+      {
+        "ref": "s12:takeaway",
+        "verdict": "supported",
+        "evidence": "s12:p0『价格跌幅和估值低位是两个条件』, s12:p1（看倍数不看股价）, s12:p3（业务稳定作为判断理由）。",
+        "note": ""
+      },
+      {
+        "ref": "s13:takeaway",
+        "verdict": "supported",
+        "evidence": "s13:p1（52周高点跌≥50%、长期估值低位、具体催化剂）, s13:f1。",
+        "note": ""
+      },
+      {
+        "ref": "s14:takeaway",
+        "verdict": "supported",
+        "evidence": "s14:p0–p3 三招各自的价格变动理由（仓位被迫买卖、财报萌芽趋势、催化剂）；『共同点』是整理者综合，没有超出原文。",
+        "note": ""
+      },
+      {
+        "ref": "s15:takeaway",
+        "verdict": "supported",
+        "evidence": "s15:p3『仅凭一根反弹K线无法从未来倒推…需要先确定…时间框架、什么情况才算逻辑失效』。",
+        "note": ""
+      },
+      {
+        "ref": "s16:takeaway",
+        "verdict": "supported",
+        "evidence": "s16:p1『每笔交易先说明准备持有多久，再匹配策略、标的和后续仓位管理』。",
+        "note": ""
+      },
+      {
+        "ref": "s17:takeaway",
+        "verdict": "supported",
+        "evidence": "s17:p0『尚未真正触及预设止损，属于提前退出』，在两三天反弹时恐惧离场。",
+        "note": ""
+      },
+      {
+        "ref": "s18:takeaway",
+        "verdict": "supported",
+        "evidence": "s18:p0 预先隔离长期与波段仓位, s18:p2 减少临场冲突。",
+        "note": ""
+      },
+      {
+        "ref": "s19:takeaway",
+        "verdict": "supported",
+        "evidence": "s19:p1边界（近似个人配置，非推荐）, s19:p2『区分到期时间与预计持有时间』。",
+        "note": ""
+      },
+      {
+        "ref": "s20:takeaway",
+        "verdict": "supported",
+        "evidence": "s20:p0（三招＋一个难点＋一个解决方案）, s17:p3『需在个案中反复练习』, s20:p1。",
+        "note": ""
+      },
+      {
+        "ref": "s1:p1",
+        "verdict": "supported",
+        "evidence": "旧段=新正文+边界，原句在段尾整句移出。正文保留『课件引用』的署名，没有把引言说成已核实的出处。",
+        "note": ""
+      },
+      {
+        "ref": "s2:p0",
+        "verdict": "supported",
+        "evidence": "段尾的整理说明『笔记保留这一显示差异』移出；EMA20标签/EMA21口述的事实仍在正文。",
+        "note": ""
+      },
+      {
+        "ref": "s2:p1",
+        "verdict": "supported",
+        "evidence": "正文给出的定义正确（短线上穿/下穿长线）；ASR主语混乱的说明移入边界，正文没有因此变强。",
+        "note": ""
+      },
+      {
+        "ref": "s2:p2",
+        "verdict": "supported",
+        "evidence": "『年线』不等于自然年平均的说明移出；正文仍明确写MA200，没有误导。",
+        "note": ""
+      },
+      {
+        "ref": "s2:p3",
+        "verdict": "supported",
+        "evidence": "正文保留『他认为』『来解释』两处署名；无统计的限定移入边界，正文仍读作讲师的观点。",
+        "note": ""
+      },
+      {
+        "ref": "s2:p4",
+        "verdict": "supported",
+        "evidence": "新正文：『…授课时大盘中枢向下，做空相对有利』，时点在正文里写明，不会被读成当前判断；边界原句保留，信息完整。",
+        "note": "",
+        "recheck": true
+      },
+      {
+        "ref": "s3:p1",
+        "verdict": "supported",
+        "evidence": "正文用『可能出现』『会增强其建仓信心』，有条件也有署名。讲师原话『管用、胜率较高』只出现在边界里，信息保留，正文没有变强。",
+        "note": ""
+      },
+      {
+        "ref": "s4:p0",
+        "verdict": "supported",
+        "evidence": "ASR把z-score记为JSCO的说明移出；正文主语由『它』改成『z-score』，语义不变，没有丢信息。",
+        "note": ""
+      },
+      {
+        "ref": "s4:p1",
+        "verdict": "supported",
+        "evidence": "窗口和口径要保留、监控表无源码的说明移出；正文写的是讲师的偏好，没有声称已复刻。",
+        "note": ""
+      },
+      {
+        "ref": "s4:p2",
+        "verdict": "supported",
+        "evidence": "正文『主要承担止损尺度的角色』没有给出倍数；『没有统一倍数』移入边界，正文不会被读成某个固定规则。",
+        "note": ""
+      },
+      {
+        "ref": "s5:p2",
+        "verdict": "supported",
+        "evidence": "旧段开头的引导语『由此保留课堂真实的条件句：』被删，这是整理者的承接语，不含讲师内容；其余文字完整。正文有『他希望』的署名，并保留『不能简化为超过3σ就卖』；『个人偏好、无回测』移入边界。",
+        "note": ""
+      },
+      {
+        "ref": "s6:p1",
+        "verdict": "supported",
+        "evidence": "正文写『讲师称若当时用期权，可能获得50%—100%收益』，有署名和『可能』；无法由正股推出、未核验的说明在边界里，信息完整。仍提醒一句：这是正文里最显眼的一个收益数字。",
+        "note": ""
+      },
+      {
+        "ref": "s6:p3",
+        "verdict": "supported",
+        "evidence": "正文只陈述个人取舍和原因；『不代表其他形态无效』移入边界，正文没有说其他形态无效。",
+        "note": ""
+      },
+      {
+        "ref": "s7:p2",
+        "verdict": "supported",
+        "evidence": "正文明说『课件…写“有且只有两种交易风格”』，是在转述课件；非穷尽分类的说明移入边界，s7:f0 也有说明。",
+        "note": ""
+      },
+      {
+        "ref": "s8:p1",
+        "verdict": "supported",
+        "evidence": "新正文：『他自述观察到做空软件的仓位极拥挤』，正文里标明是讲师自述；边界『录像未展示仓位数据原表』保留，信息完整。",
+        "note": "",
+        "recheck": true
+      },
+      {
+        "ref": "s8:p2",
+        "verdict": "supported",
+        "evidence": "正文已有『他认为』『自己预期』；边界里提到的『没有短线趋势跟随』原话在旧段也只出现在限定句里，没有丢信息。",
+        "note": ""
+      },
+      {
+        "ref": "s8:p4",
+        "verdict": "supported",
+        "evidence": "正文写的是执行办法本身；『无通用止损距离、触发不等于客观假突破』移入边界，正文没有主张这两点。",
+        "note": ""
+      },
+      {
+        "ref": "s9:p0",
+        "verdict": "supported",
+        "evidence": "正文有『他将其类比』『认为』『看作』，署名完整。",
+        "note": ""
+      },
+      {
+        "ref": "s9:p1",
+        "verdict": "supported",
+        "evidence": "正文已写出当场纠正的内容；边界只是整理者说明。",
+        "note": ""
+      },
+      {
+        "ref": "s9:p2",
+        "verdict": "supported",
+        "evidence": "正文写『讲师自述』，是事后复盘；『非无风险交易』移入边界，正文没有说当时能确定。",
+        "note": ""
+      },
+      {
+        "ref": "s9:p3",
+        "verdict": "supported",
+        "evidence": "正文『在他的期权交易经验里可能有利』，有署名和『可能』；『不保证获利』移入边界。",
+        "note": ""
+      },
+      {
+        "ref": "s10:p2",
+        "verdict": "supported",
+        "evidence": "边界原在段落中间，移出后正文只说『选龙头而非二三名』，没有说方向，所以不会被读成『做空NVDA』规则；信息完整。",
+        "note": ""
+      },
+      {
+        "ref": "s11:p0",
+        "verdict": "supported",
+        "evidence": "正文『认为不少主动机构…』有署名；『无机构占比统计』移入边界。",
+        "note": ""
+      },
+      {
+        "ref": "s12:p1",
+        "verdict": "supported",
+        "evidence": "VTRX→VTRS 的ASR校正说明移出；正文直接用正确代码。",
+        "note": ""
+      },
+      {
+        "ref": "s12:p2",
+        "verdict": "supported",
+        "evidence": "正文写『称』『自述』，没有写持有时长；『口述先说约九个月、后改成约半年』这条信息只在边界里，但完整保留了。",
+        "note": ""
+      },
+      {
+        "ref": "s12:p3",
+        "verdict": "supported",
+        "evidence": "原在段落中间的限定（相对风险、权利金可能全损）整体移入边界。正文写『他将…作为判断理由』『讲师说至少选择一年后的远期期权』，有署名，信息完整。只读正文时，远期期权有点像万全的解法，好在署名还在。",
+        "note": ""
+      },
+      {
+        "ref": "s13:p0",
+        "verdict": "supported",
+        "evidence": "正文『讲师认为』『自述』，四个估值数字完整；『授课时观点，不作当前估值』移入边界。",
+        "note": ""
+      },
+      {
+        "ref": "s13:p2",
+        "verdict": "supported",
+        "evidence": "正文『在其判断中』『他认为』『自述仓位』；讲师的『成瘾性』说法和『最后冲击』只在边界里出现，但完整保留，没有被正文当作事实。",
+        "note": ""
+      },
+      {
+        "ref": "s13:p3",
+        "verdict": "supported",
+        "evidence": "正文『在其解释中』『称』；讲师的『基本不会亏』只在边界里出现，并附反驳，没有丢信息。",
+        "note": ""
+      },
+      {
+        "ref": "s13:p4",
+        "verdict": "supported",
+        "evidence": "正文已写『原转写名称为PAPER/PEOPLE，录像本页未给出清晰代码』；移出的只是重复的整理说明。",
+        "note": ""
+      },
+      {
+        "ref": "s14:p1",
+        "verdict": "supported",
+        "evidence": "正文『他认为』『其交易想法是…可能较快修复』；『资金机制推断、无交易记录』移入边界。",
+        "note": ""
+      },
+      {
+        "ref": "s14:p2",
+        "verdict": "supported",
+        "evidence": "正文『他认为』『他自述』；『无精确成交单』移入边界，数字420/390没变。",
+        "note": ""
+      },
+      {
+        "ref": "s14:p4",
+        "verdict": "supported",
+        "evidence": "边界原在段落中间，移出后正文用『转述』标出德鲁肯米勒相关内容，信息完整。『老板说了所有秘密』这句原话现在只在边界里，没有被正文当作事实。",
+        "note": ""
+      },
+      {
+        "ref": "s15:p1",
+        "verdict": "supported",
+        "evidence": "原在段落中间的ASR校正和『未指定整书阅读』说明移入边界；正文故事和书名完整。",
+        "note": ""
+      },
+      {
+        "ref": "s15:p2",
+        "verdict": "supported",
+        "evidence": "正文保留具体日期和事件，和旧段一样；『名称混乱，不补定事件』移入边界，信息完整。",
+        "note": ""
+      },
+      {
+        "ref": "s16:p0",
+        "verdict": "supported",
+        "evidence": "正文写『课件给出』；『讲师工作分类、1—3个月无严密分界、非通用标准』移入边界（s16 图也写了『1–3个月之间没有严格分界』）。",
+        "note": ""
+      },
+      {
+        "ref": "s16:p2",
+        "verdict": "supported",
+        "evidence": "正文『讲师更倾向』；社交媒体相关说法与『无样本』只在边界里，信息完整。",
+        "note": ""
+      },
+      {
+        "ref": "s17:p0",
+        "verdict": "supported",
+        "evidence": "正文『按他自述』『其后来提及』『担心』；『非成交证明』移入边界。",
+        "note": ""
+      },
+      {
+        "ref": "s17:p2",
+        "verdict": "supported",
+        "evidence": "正文『他说』，并说明故事用途；『不能验证期望值』移入边界。",
+        "note": ""
+      },
+      {
+        "ref": "s18:p3",
+        "verdict": "supported",
+        "evidence": "正文『他还说』，交代了原因；『不同空头工具损失结构不同』移入边界。",
+        "note": ""
+      },
+      {
+        "ref": "s19:p0",
+        "verdict": "supported",
+        "evidence": "正文写『课件把…』；口述12个月与课件9个月的出入写在边界里，s18:p1 正文也写了12个月，读者能看到两者不一致。",
+        "note": ""
+      },
+      {
+        "ref": "s19:p1",
+        "verdict": "supported",
+        "evidence": "正文写『他另提』『剩余约60%』，属讲师个人方案（节标题『讲师的个人配置』）；『近似、非推荐』移入边界，s19:f0 也有说明。",
+        "note": ""
+      },
+      {
+        "ref": "s19:p3",
+        "verdict": "supported",
+        "evidence": "正文已写β≠低波动≠低风险；只把『未给阈值和窗口』移入边界。",
+        "note": ""
+      },
+      {
+        "ref": "s20:p1",
+        "verdict": "supported",
+        "evidence": "『第四部分仅为预告』移入边界；正文没有说本课教了仓位管理。",
+        "note": ""
+      }
+    ]
+  },
+  "recall": {
+    "basis": "迁移召回：题目出自 2026-10-22 交付版笔记，不是原始转写。只证明分层改写没有丢信息，不证明对课程本身的召回。",
+    "question_author": "independent_agent",
+    "answerer": "independent_agent",
+    "items": [
+      {
+        "id": "q01",
+        "from": "transcript",
+        "question": "讲师如何分工基本面与技术分析？离场时除了技术信号还看什么？",
+        "expected": "先用拐点、仓位、板块轮换确定标的（个股或ETF），技术分析辅助入场；离场还受持仓盈亏和仓位安排影响。",
+        "evidence": "s1:p2",
+        "answer": "先通过基本面的拐点、仓位和板块轮换确定标的（个股或ETF），再用技术分析辅助入场。离场除技术信号外，还受持仓盈亏和仓位安排影响，因此指标不独立组成完整交易体系。",
+        "verdict": "correct",
+        "found_in": "第 01 节",
+        "note": ""
+      },
+      {
+        "id": "q02",
+        "from": "transcript",
+        "question": "讲师用哪三条均线？各自承担什么参考角色？",
+        "expected": "EMA21作短期参考（做空时倾向先看到价格跌破EMA21），MA50作中期参考，MA200作更长周期的“年线”参考；MA50/MA200为算术平均。",
+        "evidence": "s2:p0, s2:p2",
+        "answer": "EMA21、MA50、MA200。EMA21为短期参考（做空时倾向先看到价格跌破EMA21）；MA50为中期参考；MA200为更长周期的“年线”参考，并以站上或跌破MA200解释多空偏好。",
+        "verdict": "correct",
+        "found_in": "第 02 节",
+        "note": ""
+      },
+      {
+        "id": "q03",
+        "from": "visual",
+        "question": "课件第70页图表上的短均线标签写的是什么？它与讲师口述为何不一致？",
+        "expected": "标签写EMA20；讲师说自定义指标已改为EMA21计算，只是忘改标题。",
+        "evidence": "s2:p0, s2:f0",
+        "answer": "图表标签写EMA20。讲师当场说明是自定义指标已改为EMA21计算、但忘改标题；他从EMA20改用EMA21出于个人习惯。",
+        "verdict": "correct",
+        "found_in": "第 02 节",
+        "note": ""
+      },
+      {
+        "id": "q04",
+        "from": "transcript",
+        "question": "课件上的RSI参数和讲师实际偏好有什么不同？他把哪些区域视为极端，各自意味着什么？",
+        "expected": "课件写RSI7、20—80；讲师更偏好RSI14做波段，也看更敏感、偏短线的RSI7，已不用RSI2。低于20可能短线反弹，高于80可能回落；若基本面已支持做空，RSI高于80会增强建仓信心。",
+        "evidence": "s3:p0, s3:p1, s3:p2",
+        "answer": "课件写RSI7、20—80区间；讲师口述更偏好14周期用于波段，同时也观察7周期（更敏感、偏短线），2周期他已不再使用。低于20视为极端，可能出现短线反弹；高于80可能回落，若基本面已支持做空，RSI高于80会增强其建仓信心。",
+        "verdict": "correct",
+        "found_in": "第 03 节",
+        "note": ""
+      },
+      {
+        "id": "q05",
+        "from": "transcript",
+        "question": "讲师每天在监控表里计算哪些z-score？ATR在本课主要起什么作用，是否给出统一倍数？",
+        "expected": "计算相对于20、50、200周期均值的z-score（均值回归做多看负向极值，做空看正向大偏离）；ATR主要用作止损尺度，本课没有给统一的ATR止损倍数。",
+        "evidence": "s4:p0, s4:p2",
+        "answer": "每天在监控表计算相对于20、50、200周期均值的z-score，用来观察极端延伸。ATR在本课主要承担止损尺度的角色（也可用“距50日均线几倍ATR”衡量偏离）；他没有在本课指定统一的ATR止损倍数。",
+        "verdict": "correct",
+        "found_in": "第 04 节",
+        "note": ""
+      },
+      {
+        "id": "q06",
+        "from": "visual",
+        "question": "课件第71页的XLE图是什么周期、什么指标？能否直接用它验证口述的200日z-score？",
+        "expected": "XLE 2小时图，自定义AVWAP_SD标准差通道，SMA200项目被隐藏；不能直接当作200日SMA±标准差，也不能用来复算。",
+        "evidence": "s5:n0, s5:f0",
+        "answer": "原帧为XLE“2h”（2小时）图，可见自定义指标AVWAP_SD及多档标准差线，SMA200项目被隐藏。不能直接用它验证口述的200日z-score，不能当成200日SMA布林线；源码、锚点与权重未提供。",
+        "verdict": "correct",
+        "found_in": "第 05 节",
+        "note": ""
+      },
+      {
+        "id": "q07",
+        "from": "transcript",
+        "question": "XLE到达三倍标准差附近时，讲师为什么认为立刻逆向做空可能过早？他当时为什么没打算做空XLE？",
+        "expected": "刚突破3σ就做空可能过早，价格还会高位盘整，在该区域停留约一个月后再逆向他认为胜率较高；但他估计油价仍有上行空间、可能到100，所以认为没必要立刻做空。",
+        "evidence": "s5:p1",
+        "answer": "刚突破三倍标准差就逆向做空可能过早，因为价格还会高位盘整（XLE在高位运行了一个多月）；停留约一个月后再逆向，他认为胜率相对较高。他当时估计油价仍有上行空间、甚至可能到100，因此认为没必要立刻做空XLE。",
+        "verdict": "correct",
+        "found_in": "第 05 节",
+        "note": ""
+      },
+      {
+        "id": "q08",
+        "from": "transcript",
+        "question": "讲师筛选矩形突破的三个条件是什么？",
+        "expected": "此前至少约一年的箱体；突破箱体上沿；同时突破200日均线。",
+        "evidence": "s6:p0",
+        "answer": "此前至少约一年的箱体；突破箱体上沿；同时突破200日均线。",
+        "verdict": "correct",
+        "found_in": "第 06 节",
+        "note": ""
+      },
+      {
+        "id": "q09",
+        "from": "visual",
+        "question": "课件第72页的BMY示例中，红星标在什么价位？突破了什么？随后涨到多少？",
+        "expected": "约50美元处；突破此前接近两年的箱体和MA200；随后涨到约60美元。",
+        "evidence": "s6:p1, s6:f0",
+        "answer": "红星标在约50美元处，突破了此前接近两年的箱体和MA200，随后上涨到约60美元。",
+        "verdict": "correct",
+        "found_in": "第 06 节",
+        "note": ""
+      },
+      {
+        "id": "q10",
+        "from": "transcript",
+        "question": "趋势跟随和均值回归分别被比作什么、对应左侧还是右侧、核心要求是什么？讲师以哪种为主？",
+        "expected": "趋势跟随：惯性、右侧、要“快”；均值回归：引力、左侧、要“准”和耐心。讲师以均值回归为主、趋势跟随为辅。",
+        "evidence": "s7:p0, s7:p1",
+        "answer": "趋势跟随被比作惯性，右侧交易，核心要求“快”（尽早识别、跟上浪潮）；均值回归被比作引力，左侧交易，要求“准”和耐心（抵挡价格继续不利的心理干扰）。讲师以均值回归为主、趋势跟随为辅。",
+        "verdict": "correct",
+        "found_in": "第 07 节",
+        "note": ""
+      },
+      {
+        "id": "q11",
+        "from": "transcript",
+        "question": "趋势跟随中实时分不清正常回撤与假突破时，讲师的执行办法是什么？",
+        "expected": "预先设置仓位和止损，触发止损就退出；未触发且原趋势理由仍在，就不被日常波动甩下车。",
+        "evidence": "s8:p4",
+        "answer": "预先设置仓位和止损，达到止损条件就退出；未触发且原趋势理由仍在，则拿住，避免被日常波动甩下车。",
+        "verdict": "correct",
+        "found_in": "第 08 节",
+        "note": ""
+      },
+      {
+        "id": "q12",
+        "from": "visual",
+        "question": "课件第75页比较了哪两只ETF？口述的时间点后来怎么纠正的？",
+        "expected": "韩国ETF EWY和白银SLV；口述先说十月白银，随即纠正为上一年十月主要是黄金，图中白银与韩国的迅猛行情指当年一月。",
+        "evidence": "s9:p1, s9:f0",
+        "answer": "比较韩国ETF EWY与白银SLV。口述先说十月白银，随即纠正：上一年十月主要是黄金，图中白银与韩国的迅猛行情主要指当年一月。",
+        "verdict": "correct",
+        "found_in": "第 09 节",
+        "note": ""
+      },
+      {
+        "id": "q13",
+        "from": "transcript",
+        "question": "做空航空股时，讲师在AAL、UAL、DAL中选哪只？为什么？",
+        "expected": "选AAL，因为当时它最弱；做空时的龙头指下跌方向的领跌者，不必是规模最大的公司。",
+        "evidence": "s10:p1",
+        "answer": "选AAL，因为当时AAL最弱；做空时“龙头”指下跌方向的领跌者，不必是规模最大或基本面最好者，且不要期待二三名补跌。",
+        "verdict": "correct",
+        "found_in": "第 10 节",
+        "note": ""
+      },
+      {
+        "id": "q14",
+        "from": "transcript",
+        "question": "NVO财报后大跌约20%，讲师的操作顺序是怎样的？",
+        "expected": "先抄了一下；第二天又跌，立刻止损；第三天价格再跌后重新入场，没有沿同一亏损持仓加码。",
+        "evidence": "s11:p1",
+        "answer": "最初抄了一下；第二天又跌便立刻止损；第三天价格再下跌后重新入场，而不是沿着同一亏损持仓不断加码。",
+        "verdict": "correct",
+        "found_in": "第 11 节",
+        "note": ""
+      },
+      {
+        "id": "q15",
+        "from": "transcript",
+        "question": "VTRS案例的价格路径和估值倍数是多少？困境反转若用期权，讲师建议什么期限？",
+        "expected": "2025年4月约7美元，之后约16美元；当时EV/EBITDA（NTM）约5.5倍，处于长期低位；期权至少选一年后的远期合约。",
+        "evidence": "s12:p2, s12:p3",
+        "answer": "2025年4月约7美元，之后约16美元；当时EV/EBITDA（NTM）倍数约5.5、处于长期低位。若用期权，至少选择一年后的远期期权。",
+        "verdict": "correct",
+        "found_in": "第 12 节",
+        "note": ""
+      },
+      {
+        "id": "q16",
+        "from": "transcript",
+        "question": "困境反转需要满足哪三道条件？",
+        "expected": "股价自52周高点至少下跌一半；估值处于五至十年甚至二十年的历史低位；有未来可能推动修复的具体催化剂。",
+        "evidence": "s12:p0, s13:p1",
+        "answer": "股价自52周高点至少下跌一半（≥50%）；估值处于五至十年甚至二十年的历史低位；存在具体催化剂。",
+        "verdict": "correct",
+        "found_in": "第 12 节、第 13 节",
+        "note": ""
+      },
+      {
+        "id": "q17",
+        "from": "visual",
+        "question": "课件第79页NVO估值表中，EV/EBITDA和EV/EBIT的TTM、FWD倍数分别是多少？",
+        "expected": "EV/EBITDA：TTM 7.30倍、FWD 8.22倍；EV/EBIT：TTM 7.96倍、FWD 9.62倍。",
+        "evidence": "s13:p0, s13:f0",
+        "answer": "EV/EBITDA：TTM 7.30倍、FWD 8.22倍；EV/EBIT：TTM 7.96倍、FWD 9.62倍。",
+        "verdict": "correct",
+        "found_in": "第 13 节",
+        "note": ""
+      },
+      {
+        "id": "q18",
+        "from": "transcript",
+        "question": "PG（宝洁）案例中，讲师认为是什么机制把股价压低的？压到多少？",
+        "expected": "当年一月市场追逐动量股，为保持β中性而卖出必需消费，把宝洁压到约130美元、长期低估值区，而公司本身没有发生相应坏事。",
+        "evidence": "s14:p1",
+        "answer": "讲师认为当年一月市场追逐动量股，资金为保持β中性而卖出必需消费（仓位导致的价格错位），把宝洁压到约130美元、长期低估值区。",
+        "verdict": "partial",
+        "found_in": "第 14 节",
+        "note": "说清了β中性卖出必需消费的机制和约130美元，但漏了期望答案中的要点：讲师认为公司本身并未发生相应坏事，这正是“错位”而非基本面恶化的依据。"
+      },
+      {
+        "id": "q19",
+        "from": "transcript",
+        "question": "SMH案例中，讲师认为理想的做空点在哪里？他实际在什么价位进场？",
+        "expected": "应在NVDA财报日、价格未明显上涨时于约420美元附近做空；他犹豫不到一周，实际进场时已约390美元。",
+        "evidence": "s14:p2",
+        "answer": "理想做空点是在NVDA财报日、价格未明显上涨时识别机会，约420美元附近做空；他犹豫不到一周，实际进场时约390美元。",
+        "verdict": "correct",
+        "found_in": "第 14 节",
+        "note": ""
+      },
+      {
+        "id": "q20",
+        "from": "transcript",
+        "question": "两个“空头遇反弹”的案例结果有什么不同？讲师的教学结论是什么？",
+        "expected": "2025年11月21日前后做空后遇美联储偏鸽和强反弹，结果形成持续上涨；一月底/二月财报后的反弹涨两三天又回落。结论：当时表象相似，无法凭一根K线判断，要事先确定时间框架和逻辑失效条件。",
+        "evidence": "s15:p2, s15:p3",
+        "answer": "2025年11月21日前后做空后遇美联储偏鸽表态和强反弹，形成持续上涨趋势；一月底/二月附近财报后大盘反弹，涨两三天又回落。教学结论：当时表象相似，仅凭一根反弹K线无法倒推正确选择，需要先确定这笔交易原本的时间框架、什么情况才算逻辑失效。",
+        "verdict": "correct",
+        "found_in": "第 15 节",
+        "note": ""
+      },
+      {
+        "id": "q21",
+        "from": "transcript",
+        "question": "课件给出的三类时间框架分别对应多长的持有期？",
+        "expected": "日内与短线：日内至约一周；波段：1—8周；长线：三个月以上。",
+        "evidence": "s16:p0",
+        "answer": "日内与短线：日内至约一周；波段：1—8周；长线：三个月以上。",
+        "verdict": "correct",
+        "found_in": "第 16 节",
+        "note": ""
+      },
+      {
+        "id": "q22",
+        "from": "transcript",
+        "question": "私人信贷/ARES复盘中，讲师的错误是什么？入场价位怎么变化？",
+        "expected": "原想做偏长波段，在两三天反弹、还没触及预设止损时就恐惧离场，又重新建仓；原空头入场约103—104，重新进入约100，位置更差。",
+        "evidence": "s17:p0",
+        "answer": "原本想做偏长的波段，却在两三天反弹、尚未触及预设止损时因恐惧提前离场，随后又重新建仓。原先空头入场约103—104，重新进入时约100，位置更差。",
+        "verdict": "correct",
+        "found_in": "第 17 节",
+        "note": ""
+      },
+      {
+        "id": "q23",
+        "from": "transcript",
+        "question": "讲师的长期篮子和波段篮子分别放什么策略、倾向用多长期限的期权？为什么做空不放进长期篮子？",
+        "expected": "长期篮子偏困境反转，期权十二个月以上；波段篮子放趋势跟随和仓位扭曲后的均值回归，期权六至九个月；做空不放长期篮子，因为空头挤压带来的急反弹难以承受。",
+        "evidence": "s18:p0, s18:p1, s18:p3",
+        "answer": "长期篮子偏困境反转，倾向十二个月以上的期权；波段篮子用于趋势跟随和仓位扭曲后的均值回归，倾向六至九个月期权。做空不放进长期篮子，因为空头挤压带来的急反弹难以承受，空头持有时间略短。",
+        "verdict": "correct",
+        "found_in": "第 18 节",
+        "note": ""
+      },
+      {
+        "id": "q24",
+        "from": "transcript",
+        "question": "课件第85页的个人配置中，长期、投机、波段各占多少？长期仓位用什么样的期权？",
+        "expected": "长期不超过35%，计划持有三个月以上，用九个月以上、约超过10%虚值的LEAPS，单腿只做多，均值回归；投机5%—10%；波段约60%，用六至九个月到期、最接近实值的虚值期权；期权交易尽量选低β标的。",
+        "evidence": "s19:p0, s19:p1, s19:p2, s19:p3",
+        "answer": "长期不超过35%，投机5%—10%，波段约60%。长期仓位用九个月以上、约超过10%虚值的LEAPS，单腿、只做多，采用均值回归（口述上一节提十二个月以上）。",
+        "verdict": "correct",
+        "found_in": "第 19 节",
+        "note": ""
+      },
+      {
+        "id": "q25",
+        "from": "transcript",
+        "question": "本课最后把内容收成哪三招、一个难点和一个解决方案？下一课讲什么？",
+        "expected": "三招：仓位错位后的均值回归、萌芽趋势的及时跟随、极端历史估值加催化剂的提前布局；难点是确定并遵守时间框架；解决方案是事前隔离仓位加纪律。下一课是第四部分仓位管理。",
+        "evidence": "s20:p0, s20:p1",
+        "answer": "三招：仓位错位后的均值回归、萌芽趋势的及时跟随、极端历史估值加催化剂的提前布局；一个难点：确定并遵守时间框架；一个解决方案：事前隔离仓位和纪律。下一课讲“第四部分：仓位管理”。",
+        "verdict": "correct",
+        "found_in": "第 20 节",
+        "note": ""
+      }
+    ]
+  }
+}

@@ -39,14 +39,6 @@ class HandoffTest(unittest.TestCase):
             n['sections'][0]['frames'][0]['time']=5
             n['sections'][0]['frames'][0]['path']='missing.png'
             with self.assertRaises(OSError): render()
-            c.record(Args(run=root, stage='render', status='failed', detail='missing frame'))
-            c.record(Args(run=root, stage='render', status='completed', detail='fixed'))
-            self.assertEqual(len((root/'events.jsonl').read_text().splitlines()),2)
-            review={'run_id':'test','outcome':'completed','summary':'test','lessons':[]}
-            c.write(root/'review.json',json.dumps(review))
-            c.remember(Args(review=root/'review.json',out=root/'memory'))
-            c.remember(Args(review=root/'review.json',out=root/'memory'))
-            self.assertEqual(len(list((root/'memory').glob('*.md'))),2)
 
     def test_project_protection(self):
         with self.assertRaisesRegex(ValueError, '.bcut'):

@@ -82,7 +82,7 @@ class MaterialGates(unittest.TestCase):
         row = copy.deepcopy(self.row)
         row.update(kind='video', path='video.mp4', sha256=sha(media))
         row['video_review'] = {'video_id': 'fixture-id', 'duration_seconds': 120, 'media_integrity': 'passed', 'transcript_reading': 'full', 'visual_review': 'full_timeline', 'artifacts': {}}
-        for key in ['transcript', 'read_coverage', 'visual_coverage', 'image_audit', 'review']:
+        for key in ['transcript', 'read_coverage', 'manifest', 'fidelity_eval']:
             artifact = self.root / (key + '.json')
             artifact.write_text('{}')
             row['video_review']['artifacts'][key] = {'path': artifact.name, 'sha256': sha(artifact)}
@@ -114,7 +114,7 @@ class MaterialGates(unittest.TestCase):
                 self.assertEqual(self.result(row)['status'], 'failed')
 
     def test_video_evidence_each_required(self):
-        for key in ['transcript', 'read_coverage', 'visual_coverage', 'image_audit', 'review']:
+        for key in ['transcript', 'read_coverage', 'manifest', 'fidelity_eval']:
             row = self.video_fixture()
             row['video_review']['artifacts'].pop(key)
             with self.subTest(key=key):
@@ -122,7 +122,7 @@ class MaterialGates(unittest.TestCase):
 
     def test_video_changed_evidence_rejected(self):
         row = self.video_fixture()
-        (self.root / 'visual_coverage.json').write_text('changed')
+        (self.root / 'manifest.json').write_text('changed')
         self.assertEqual(self.result(row)['status'], 'failed')
 
     def test_video_download_only_remains_pending(self):

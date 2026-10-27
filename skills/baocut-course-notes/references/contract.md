@@ -1,89 +1,77 @@
-# 数据交接合同 v2（兼容v1基本笔记）
+# 数据合同 v3
 
-Agent读完转写和画面后写notes.json；脚本不生成语义内容，不操作.bcut。所有正文是纯文本，由渲染器转义。schema_version可省略；旧版frames未声明source_type时按video_frame处理。
+`notes.json` 是一课的唯一事实源：完整笔记、来源归属和阅读布局都在这一个文件里，不再有需要用哈希绑定的独立布局文件。脚本不生成语义内容，所有文字按纯文本转义。
+
+- 起步用 `course_notes.py scaffold` 生成绑定分块的骨架（不要从零手写或另写生成器）；`TODO(scaffold)` 占位会被校验拒绝，`read_chunks` 必须由读过转写的人或代理填写。
+- 写完用 `course_notes.py validate` 一次拿到全部问题，每条带字段路径（如 `sections[14].visual`、`sections[3].source_ids`）；不必读脚本源码猜规则。下面的示例和 `examples/synthetic`、`scripts/test_layered.py` 中的 `v3_notes()` 都是能通过校验的完整样例。
+- `visual` 可以是 SVG，也可以是生成的 PNG/JPEG/WebP 信息图；位图必须带 `labels`：图中出现的全部文字，逐条列出，例如 `{"path": "visuals/s01.jpg", "alt": "…", "refs": ["p0"], "labels": ["断网以后", "设计重试"]}`。
 
 ```json
 {
-  "schema_version": 2,
-  "title": "课程标题",
+  "schema_version": 3,
+  "title": "麦田美股交易 · 第3课：策略、技术指标与时间框架",
+  "course_title": "课程名", "issue": "第3课 / 5",
+  "heading": "页面主标题", "subtitle": "这一课解决什么问题",
   "source_url": "https://www.youtube.com/watch?v=VIDEO_ID",
-  "limitations": ["完整阅读已导出转写；画面按换页采样，未逐秒听审；真实手机未测试"],
+  "limitations": ["完整阅读14个转写块；画面为1fps换页检测+15秒兜底，非逐秒观看"],
   "read_chunks": ["chunk-0001"],
-  "omitted": [],
-  "summary": ["简短摘要，指向本课核心问题和结论。"],
+  "omitted": [{"id": "s-9", "reason": "调试麦克风，无教学内容"}],
+  "map": {"path": "visuals/map.svg", "alt": "本课论证链", "caption": "按各节关键判断绘制"},
+  "summary": ["本课主线一句话"], "summary_terms": ["主线"],
+  "groups": [{"start": 1, "label": "一 / 指标与图形"}],
   "sections": [{
-    "title": "实际主题转场",
-    "start": 0,
-    "end": 300,
-    "source_ids": ["s-g1.0"],
-    "paragraphs": ["教师的论证与适用边界。"],
+    "title": "实际主题", "short": "目录短标题",
+    "takeaway": "本节一句话结论（整理者提炼）",
+    "start": 0, "end": 300, "source_ids": ["s-1", "s-2"],
+    "terms": ["正文中的准确短语"],
+    "flow": "p0 f0 p1 n0 x0",
+    "visual": {"path": "visuals/s01.svg", "alt": "图解的文字描述", "refs": ["p0", "p1"]},
+    "paragraphs": ["讲师的论证、条件与边界。", {"text": "讲师的经验判断。", "caveat": "未给样本或失败率"}],
     "examples": ["课堂案例、代码与演示细节。"],
-    "editor_notes": ["标明讲义补充或整理者解释。"],
+    "editor_notes": ["整理者说明：口径差异、ASR 校正等。"],
     "frames": [
-      {"source_type":"video_frame", "path":"frames/120.png", "time":120, "caption":"视频此秒显示的内容"},
-      {"source_type":"pdf_page", "path":"frames/slide-03.png", "source_label":"官方课程讲义", "source_url":"https://example.org/slides.pdf#page=3", "page":3, "related_time":125, "caption":"讲义内容；时间只作讲解导航"}
+      {"source_type": "video_frame", "path": "frames/120.png", "time": 120, "caption": "视频此秒显示的内容"},
+      {"source_type": "pdf_page", "path": "frames/slide-03.png", "source_label": "官方课程讲义", "page": 3, "related_time": 125, "caption": "讲义内容"}
     ]
   }],
-  "self_test": [{"question":"复习问题", "answer":"有证据支持的答案", "section":1}],
-  "supplements": [{"title":"未在课堂展开的主题", "text":"补充正文", "source_label":"官方讲义，课堂未展开", "source_url":"https://example.org/slides.pdf", "pages":[3,4]}]
+  "bridges": {"x0": "说明这份补充怎样回答本节的问题（整理者衔接）"},
+  "supplements": [{"title": "外部补充", "text": "补充正文", "source_label": "TradingView官方帮助；编者补充", "source_url": "https://example.org", "pages": [3]}],
+  "self_test": [{"question": "复习问题", "answer": "有证据支持的答案", "section": 1}]
 }
 ```
 
-## 覆盖与来源
+## 来源归属
 
-- source_ids来自chunks/index.json，每句恰好归属一个section或omitted；omitted格式为`{"id":"s-1","reason":"休息，无教学内容"}`。重复归属、缺失、同时引用和省略都报错。仍需人工判断正文是否真正保留相应知识点。
-- read_chunks只能在实际读完后填写。脚本检查完整声明，不能证明真实阅读。
-- 时间单位秒，区间包含引用的原句和视频帧。未知首尾/缺段在limitations写明；转写全读不等于音频无漏词。
-- paragraphs/examples/editor_notes/summary均为纯文本字符串列表。summary、self_test、supplements可省略。自测section为现有章节的一基编号，可省略；不绑定虚构课堂时间。
-- 补充条目有明确source_label，外部URL限http(s)，pages为正整数的PDF物理页码。旧稿`official_slide_supplements`视为supplements兼容别名，默认source_label为官方讲义，不能同时给两种字段。其他自定义内容字段不会自动排版；增加新字段前先确认渲染器和导出链支持，防止静默遗漏。
+| 字段 | 页面标签 | 放什么 |
+|---|---|---|
+| `paragraphs` | 课堂（默认，不加标签） | 讲师讲述的论证、条件、数字、语气 |
+| `examples` | 课堂案例 | 课堂上的案例、代码、演示 |
+| `editor_notes` | 整理者说明 | 口径差异、ASR 校正、图表核对、术语边界 |
+| `supplements` | 外部资料 | 课外核对或推荐阅读，必须有 `source_label` |
+| `takeaway`、`visual`、`map` | 整理者 / 整理者图解 | 只重组已有事实的提炼与图解 |
+
+- 内容条目可以是字符串，或 `{"text", "caveat"}`。`caveat` 写这一条的限制（“讲师个人经验，未给样本”），渲染为条目下方的小字。用它替代正文里的重复免责句，但不能用它删除讲师原话中的不确定语气。
+- 讲师说“我猜/据说/我的经验”时，正文照实写；外部资料的结论不写进 `paragraphs`。
+
+## 覆盖与布局
+
+- `source_ids` 来自 `chunks/index.json`，每句恰好归属一节或进入 `omitted`（附理由）。重复、遗漏、同时引用和省略都报错。`read_chunks` 只能在真读完后填写。
+- 时间单位为秒，节区间包含它引用的原句和视频帧。
+- `flow` 决定完整笔记里的展示顺序，token 为 `pN`/`eN`/`nN`/`fN`（本节，零基）、`fS:N`（第 S 节的讲义图，一基节号）、`xN`（全局 supplements）。省略 `flow` 时按 p→e→n→f 顺序。每个单位在全文恰好出现一次；没有放进任何节的 supplement 会出现在文末“延伸资料”，不会丢失。视频帧不能跨节。
+- `terms` 必须在本节完整笔记的文字中精确出现；每个文本块最多强调两个。
+- `bridges` 的键只能是已有的 `xN`，渲染为“整理者衔接”，只连接已有论证，不加新事实。
+- `visual.refs` 必须是本节 `flow` 里的 token，渲染为“依据完整笔记第 N 条”的链接。
 
 ## 图片
 
-所有图片均为run目录内PNG/JPEG/WebP，路径不能逃出run。每幅必须有caption，并在实际查看后选入。图片完整性复核另存 `image-audit.json`（见 [逐图验收](quality-delivery.md#逐图完整性验收)）；不改变既有 notes schema，也不把新字段塞进正文。
+- 原帧和讲义图：run 目录内的 PNG/JPEG/WebP，必须有 caption。`video_frame.time` 是实际截帧秒数，落在节区间内；`pdf_page` 必填 `source_label` 和物理页 `page`，不写 `time`，`related_time` 只作讲解导航。印刷页号写在 caption，不覆盖 `page`。
+- 图解：run 目录内的 `.svg`，必须有 `alt`。以 `<img>` 内嵌，SVG 里的脚本与外链不会执行。
+- 没有值得放的画面可以 `frames: []`，不为凑数插图。
 
-- `video_frame`：time是该帧实际截取时间，必须落在所属节区间内。
-- `pdf_page`：source_label及page必填；source_url可选。不得写非空time。related_time是可选的相关讲解导航，必须在节区间内，渲染时明确说明不是同秒截图。
-- 印刷页号与物理页码不同，额外印刷页号写caption，不覆盖page。
-- 没有有价值画面可frames=[]，说明原因；不为凑数量制造插图。
+## 运行目录
 
-## 运行和审查
+保留原始导出、`chunks/`、`notes.json`、`frames/`、`visuals/`、`课堂笔记.html`、`fidelity-eval.json`、`manifest.json`。来源、依赖、阶段日志、问题与修复、交付版本都写在 manifest（见 [可追溯运行](traceability.md)）。
 
-保留原始导出、chunks/index.json、notes.json、选用图、课堂笔记.html、events.jsonl及review.json；课程批量清单放协调目录。审查差异可单独audit.json并从review引用。
+## 兼容 v2
 
-```json
-{
-  "run_id":"视频ID-UTC时间",
-  "outcome":"partial",
-  "summary":"产物地址、实际完成与剩余检查",
-  "validation": {
-    "content":{"status":"passed", "evidence":"audit.json"},
-    "html_static":{"status":"passed", "evidence":"检查范围与记录"},
-    "desktop":{"status":"pending", "evidence":null},
-    "narrow":{"status":"pending", "evidence":null},
-    "real_phone":{"status":"not_requested", "evidence":null},
-    "pdf":{"status":"not_requested", "evidence":null}
-  },
-  "blocker":null,
-  "resume_condition":null,
-  "source_hashes":{},
-  "lessons":[{"status":"candidate","scope":"具体环境/阶段","finding":"实际问题","evidence":"错误或测试结果","next_action":"下次如何验证"}],
-  "metrics":{"wall_seconds":null,"active_seconds":null,"tokens":null}
-}
-```
-
-outcome为completed/partial/failed，validation状态为passed/pending/blocked/not_requested。未测不写passed；unknown用null。真实设备验收是否必需按本次用户目标决定，但未做不得声称“手机实测”。导出检查与内容阅读分开，哈希绑定本次实际源版本；记录实际渲染使用的证据index路径与哈希。补转写后可能使用合并索引，恢复时不能猜固定文件名或改read_chunks来迁就旧索引。失败也写review。
-
-只有用户直接授权更新memory时才写短更新；不保存逐字稿、账号或原始会话。Skill更新与memory更新是不同操作。
-
-## 可追溯扩展（不改变 notes v2）
-
-课程推荐材料按 [推荐材料与论文](reading-materials.md) 保存 materials.json，补充正文仍用 editor_notes/supplements、论文图用 pdf_page。review.validation 加 reading_materials 与 material_integration，并引用实际材料 ID、阅读范围和回查证据；未读/受限不标 passed。材料原文、台账与 notes/HTML 的依赖加入 trace-spec，不要求旧任务为了新字段重读或重新生成。
-
-完整视频笔记另存 visual-inventory.json 与 visual-coverage.json（见 [视频视觉覆盖](visual-coverage.md)），review.validation.visual_coverage 必须通过。音频/字幕齐全或 PDF 齐全不能代替此门槛；未核完用 partial。明确摘要、纯音频或纯讲义模式按范围记 not_requested。
-
-运行入口、events v2、不可覆盖的文件依赖快照、修复与复核记录按 [可追溯运行](traceability.md)。review 可增加 `trace_snapshot`、`scope_revision`、`delivered_files` 和 `audit` 路径，保留已有 validation/metrics 语义。最终 review 与产物一起冻结；未知 token、费用、阶段耗时仍为 null。旧任务只读盘点不冒充本次生成。
-
-
-## 阅读布局
-
-详细 HTML 的阅读顺序由独立的 `reading-layout.json` 表达，合同见 [阅读布局与图文整合](editorial-layout.md)。事实与来源仍写在本合同的 notes 字段中；supplements 是资料类型，不要求在文末集中展示。布局必须绑定 notes 原始字节 SHA，完整引用每个正文与配图单位；只允许资料图跨节展示，视频帧保持真实时间归属。
+`schema_version` 为 2（或省略）时仍按旧合同加 `reading-layout.json` 渲染，用于已交付的旧课。v2 迁移到 v3：把布局文件每节的 `short`/`takeaway`/`terms`/`flow` 和顶层 `course_title`/`issue`/`title`→`heading`/`subtitle`/`summary_title`/`summary_terms`/`groups`/`bridges` 移入 notes，删除 `notes_sha256`；正文内容不改。

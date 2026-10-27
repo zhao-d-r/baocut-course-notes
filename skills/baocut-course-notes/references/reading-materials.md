@@ -18,7 +18,7 @@
 
 课外明确推荐的视频默认按课堂视频标准复核；用户明确排除才记录范围理由。不以作者配套文本、摘要、网页字幕或代码阅读替代完整音视频采集。复用匹配视频ID的媒体、BaoCut转写及真实核验记录；音频/视频stream完整性与尾段解码分别检查，全文顺序阅读转写，按`visual-coverage.md`盘点全时间轴画面、复核入选原帧。将独有的推导、代码执行状态、例子与边界写入关联课堂正文，并明确属于课外视频、给真实时间码与来源。并非逐秒播放/听审时如实注明。
 
-材料登记`kind=video`、真实媒体`path/sha256`，以及`video_review`：`video_id`、`duration_seconds`、`media_integrity=passed`、`transcript_reading=full`、`visual_review=full_timeline`。`artifacts`登记带当前哈希的`transcript`、`read_coverage`、`visual_coverage`、`image_audit`、`review`五项，字段为`path/sha256`。缺一阶段保持partial/pending；只有配套文稿不允许声明视频full。文件/声明校验仍不能证明真的阅读或看过画面；独立内容与最终页面验收继续执行。
+材料登记`kind=video`、真实媒体`path/sha256`，以及`video_review`：`video_id`、`duration_seconds`、`media_integrity=passed`、`transcript_reading=full`、`visual_review=full_timeline`。`artifacts`登记带当前哈希的`transcript`、`read_coverage`、`manifest`、`fidelity_eval`四项，字段为`path/sha256`。缺一阶段保持partial/pending；只有配套文稿不允许声明视频full。文件/声明校验仍不能证明真的阅读或看过画面；独立内容与最终页面验收继续执行。
 
 ### 论文、书章与网页
 
@@ -37,7 +37,7 @@
 
 ## 阅读台账与正文连接
 
-课程级保存一份 `materials.json`，单课 review 引用它及本课材料 ID。共用材料只需读一次，但复用必须匹配版本/哈希和实际已读范围。最少字段示例：
+课程级保存一份 `materials.json`，单课 manifest 把它列为 artifact 并在 scope 中写本课材料 ID。共用材料只需读一次，但复用必须匹配版本/哈希和实际已读范围。最少字段示例：
 
 ```json
 {
@@ -79,14 +79,14 @@ reading_status 使用 unread/abstract_only/partial/full/blocked/out_of_scope；�
 正文沿用 notes v2：
 
 - `sections[].editor_notes`：在对应课堂论证旁写“论文补充 [paper-001，v1，物理页3，式2]：……”；来源网页链接及详细方法写入 `supplements`。
-- `supplements[]`：用 title/text/source_label/source_url/pages 表达独立补充，source_label 标“课程推荐论文，非课堂口述”；网页不写 pages。text 中给材料 ID、章节/图号、实验口径、局限及关联课堂章节。每篇保留有实际学习价值的内容，不能仅列标题与 URL；条目独立标注来源，通过 reading-layout 放进相关知识点，不要求单列文末补充区。
+- `supplements[]`：用 title/text/source_label/source_url/pages 表达独立补充，source_label 标“课程推荐论文，非课堂口述”；网页不写 pages。text 中给材料 ID、章节/图号、实验口径、局限及关联课堂章节。每篇保留有实际学习价值的内容，不能仅列标题与 URL；条目独立标注来源，通过 notes 的 `flow` 放进相关知识点，不要求单列文末补充区。
 - 论文插图使用已支持的 `pdf_page`，放在相关节的 frames 中，caption 明确“论文补充”、材料 ID/版本/图号，source_label/source_url/page 完整。不要伪造 time；需要导航时用 related_time。
 - 重要图表可以复用已核对版本的原图，或从原页提取完整教学区域；保留坐标、图例、表头、单位、样本量和关键脚注，并写图的解读及实验边界，不只插图不解释。裁切不能改变含义，原页另保留供回查；已有课堂图与同版原文一致时可复用，不必重复塞图。
 
 ## 回查与验收
 
-在 `review.validation` 添加 `reading_materials` 与 `material_integration`，状态沿用 passed/pending/blocked/not_requested，evidence 指向台账及具体回查记录。逐项核对预期阅读清单、身份、真实阅读范围和正文贡献。需要材料而未读完时，总 outcome=partial；缺口不阻塞视频文字笔记等独立阶段。
+在 manifest 的 `status` 写 `reading_materials` 与 `material_integration`（passed/pending/blocked/not_requested）及证据路径。补充内容进入 [保真评测](fidelity-eval.md) 的精度抽查（ref 为 `xN`）。逐项核对预期阅读清单、身份、真实阅读范围和正文贡献。需要材料而未读完时，总 outcome=partial；缺口不阻塞视频文字笔记等独立阶段。
 
-检查每个关键补充的原文位置、预算/指标/基线、语气和归因；查看最终 HTML 确认 supplements、正文注释与论文图实际保留、来源链接可回查，并按 [阅读布局与图文整合](editorial-layout.md) 检查补充与相关图紧邻其解释的课堂问题。结构校验、哈希或全文提取不能证明读完或语义正确。trace-spec 把使用的原文、materials.json、图片、notes、review 和 HTML 加入依赖链；材料版本变化只重做受影响的补充和产物，不重复 ASR。
+检查每个关键补充的原文位置、预算/指标/基线、语气和归因；查看最终 HTML 确认 supplements、正文注释与论文图实际保留、来源链接可回查，并按 [分层阅读与图解](layered-reading.md) 检查补充与相关图紧邻其解释的课堂问题。结构校验、哈希或全文提取不能证明读完或语义正确。manifest 的 artifacts 把使用的原文、materials.json、图片、notes、评测和 HTML 加入依赖链；材料版本变化只重做受影响的补充和产物，不重复 ASR。
 
 运行 `python3 <skill>/scripts/validate_materials.py --materials <course>/materials.json --course-root <course>`，核对材料身份、当前源哈希、声明阅读范围与实际正文/图表落点。required 材料未完成时返回 pending，不把已下载当完成；该工具不判断语义正确或代理是否真的读过。正文改变后保留原视频视觉盘点，更新依赖哈希并重新验收受影响的图和HTML，旧UI记录不能自动沿用。
