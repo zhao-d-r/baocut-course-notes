@@ -64,6 +64,8 @@ def log_stage(run_dir, stage, status, detail='', evidence=None):
         return
     import datetime as dt
     data = json.loads(path.read_text(encoding='utf-8'))
+    if (data.get('revisions') or [{}])[-1].get('delivered'):
+        return  # a delivered run is an archive: re-checking it must not rewrite its manifest
     data.setdefault('log', []).append({'at': dt.datetime.now(dt.timezone.utc).isoformat(), 'occurred_at': None, 'stage': stage,
                                        'status': status, 'attempt': None, 'job_id': None, 'detail': detail, 'evidence': evidence})
     write(path, dump(data) + '\n')
@@ -72,9 +74,10 @@ def log_stage(run_dir, stage, status, detail='', evidence=None):
 def chunks(args):
     src = safe_path(args.input)
     out = safe_path(args.out)
-    rows = read_json(src).get('sentences')
+    data = read_json(src)
+    rows = data.get('sentences') or data.get('segments')  # older bcut-cli exports vs BaoCut 3.x transcript JSON
     if not rows:
-        raise ValueError('Expected nonempty BaoCut export sentences')
+        raise ValueError('Expected nonempty BaoCut export sentences or segments')
     seen, normalized = set(), []
     for r in rows:
         ident = r['id']

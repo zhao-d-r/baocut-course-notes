@@ -40,6 +40,14 @@ class HandoffTest(unittest.TestCase):
             n['sections'][0]['frames'][0]['path']='missing.png'
             with self.assertRaises(OSError): render()
 
+    def test_baocut3_segments_export(self):
+        with tempfile.TemporaryDirectory() as tmp, contextlib.redirect_stdout(io.StringIO()):
+            root = Path(tmp)
+            segs = [{'id':'run-1', 'start':1.4, 'end':20.7, 'text':'So as mentioned, I am Lee.', 'speaker':'说话人 1', 'words':[]}]
+            c.write(root/'export.json', json.dumps({'schema':'baocut.transcript', 'segments':segs}))
+            c.chunks(Args(input=root/'export.json', out=root/'chunks'))
+            self.assertEqual(c.read_json(root/'chunks/index.json')['sentences'][0]['id'], 'run-1')
+
     def test_project_protection(self):
         with self.assertRaisesRegex(ValueError, '.bcut'):
             c.safe_path('/tmp/example.bcut/transcript.json')

@@ -173,8 +173,9 @@ def main():
         manifest = html_path.parent / 'manifest.json'
         if manifest.exists():
             data = json.loads(manifest.read_text(encoding='utf-8'))
-            data.setdefault('status', {})['browser_check'] = summary
-            write(manifest, dump(data) + '\n')
+            if not (data.get('revisions') or [{}])[-1].get('delivered'):  # never rewrite a delivered archive
+                data.setdefault('status', {})['browser_check'] = summary
+                write(manifest, dump(data) + '\n')
         log_stage(html_path.parent, 'browser_check', 'failed' if problems else 'completed', summary, str(out_dir / 'html-check.json'))
         print(dump(report))
         sys.exit(1 if problems else 0)
