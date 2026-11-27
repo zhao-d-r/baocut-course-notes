@@ -2,27 +2,27 @@
   "static": {
     "pages": [
       {
-        "path": "notes/lecture-01/课堂笔记.html",
+        "path": "notes/lecture-01/麦田美股-第1课.html",
         "decoded_images": 32,
         "links": 40
       },
       {
-        "path": "notes/lecture-02/课堂笔记.html",
+        "path": "notes/lecture-02/麦田美股-第2课.html",
         "decoded_images": 33,
         "links": 58
       },
       {
-        "path": "notes/lecture-03/课堂笔记.html",
+        "path": "notes/lecture-03/麦田美股-第3课.html",
         "decoded_images": 18,
         "links": 40
       },
       {
-        "path": "notes/lecture-04/课堂笔记.html",
+        "path": "notes/lecture-04/麦田美股-第4课.html",
         "decoded_images": 21,
         "links": 50
       },
       {
-        "path": "notes/lecture-05/课堂笔记.html",
+        "path": "notes/lecture-05/麦田美股-第5课.html",
         "decoded_images": 25,
         "links": 53
       },
@@ -38,7 +38,7 @@
   },
   "browser": [
     {
-      "page": "notes/lecture-01/课堂笔记.html",
+      "page": "notes/lecture-01/麦田美股-第1课.html",
       "width": 1440,
       "title": "麦田美股交易入门到实战 · 第1课：从概率世界到行业工作台",
       "images": 32,
@@ -48,7 +48,7 @@
       "external_requests": 0
     },
     {
-      "page": "notes/lecture-02/课堂笔记.html",
+      "page": "notes/lecture-02/麦田美股-第2课.html",
       "width": 1440,
       "title": "麦田美股交易入门到实战 · 第2课：择时、个股比较与期权结构",
       "images": 33,
@@ -58,7 +58,7 @@
       "external_requests": 0
     },
     {
-      "page": "notes/lecture-03/课堂笔记.html",
+      "page": "notes/lecture-03/麦田美股-第3课.html",
       "width": 1440,
       "title": "麦田美股交易入门到实战 · 第3课：策略、技术指标与时间框架",
       "images": 18,
@@ -68,7 +68,7 @@
       "external_requests": 0
     },
     {
-      "page": "notes/lecture-04/课堂笔记.html",
+      "page": "notes/lecture-04/麦田美股-第4课.html",
       "width": 1440,
       "title": "麦田美股交易入门到实战 · 第4课：仓位管理与非对称风险",
       "images": 21,
@@ -78,7 +78,7 @@
       "external_requests": 0
     },
     {
-      "page": "notes/lecture-05/课堂笔记.html",
+      "page": "notes/lecture-05/麦田美股-第5课.html",
       "width": 1440,
       "title": "麦田美股交易入门到实战 · 第5课：工具、日常流程与历史仓位案例",
       "images": 25,
@@ -97,7 +97,7 @@
       "external_requests": 0
     },
     {
-      "page": "notes/lecture-01/课堂笔记.html",
+      "page": "notes/lecture-01/麦田美股-第1课.html",
       "width": 390,
       "title": "麦田美股交易入门到实战 · 第1课：从概率世界到行业工作台",
       "images": 32,
@@ -107,7 +107,7 @@
       "external_requests": 0
     },
     {
-      "page": "notes/lecture-02/课堂笔记.html",
+      "page": "notes/lecture-02/麦田美股-第2课.html",
       "width": 390,
       "title": "麦田美股交易入门到实战 · 第2课：择时、个股比较与期权结构",
       "images": 33,
@@ -117,7 +117,7 @@
       "external_requests": 0
     },
     {
-      "page": "notes/lecture-03/课堂笔记.html",
+      "page": "notes/lecture-03/麦田美股-第3课.html",
       "width": 390,
       "title": "麦田美股交易入门到实战 · 第3课：策略、技术指标与时间框架",
       "images": 18,
@@ -127,7 +127,7 @@
       "external_requests": 0
     },
     {
-      "page": "notes/lecture-04/课堂笔记.html",
+      "page": "notes/lecture-04/麦田美股-第4课.html",
       "width": 390,
       "title": "麦田美股交易入门到实战 · 第4课：仓位管理与非对称风险",
       "images": 21,
@@ -137,7 +137,7 @@
       "external_requests": 0
     },
     {
-      "page": "notes/lecture-05/课堂笔记.html",
+      "page": "notes/lecture-05/麦田美股-第5课.html",
       "width": 390,
       "title": "麦田美股交易入门到实战 · 第5课：工具、日常流程与历史仓位案例",
       "images": 25,

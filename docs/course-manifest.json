@@ -2,27 +2,27 @@
   "snapshot_date": "2026-10-22",
   "pages": [
     {
-      "path": "notes/lecture-01/课堂笔记.html",
+      "path": "notes/lecture-01/麦田美股-第1课.html",
       "sha256": "02fea432e58cc3402250a9233121d514c33c26195ec2d192ce83bb3cb1275ecd",
       "bytes": 5525853
     },
     {
-      "path": "notes/lecture-02/课堂笔记.html",
+      "path": "notes/lecture-02/麦田美股-第2课.html",
       "sha256": "21fdb6a9e25c0cc55bc9d532aa651cfde2e18496ed93f5f7db40e55fce999ff4",
       "bytes": 6535563
     },
     {
-      "path": "notes/lecture-03/课堂笔记.html",
+      "path": "notes/lecture-03/麦田美股-第3课.html",
       "sha256": "6a92b10649cc3168260d00ce19f366ed0466146ec4211f27cfaf22cdff7a1265",
       "bytes": 4049549
     },
     {
-      "path": "notes/lecture-04/课堂笔记.html",
+      "path": "notes/lecture-04/麦田美股-第4课.html",
       "sha256": "6dff239a91d90e6c67b27c1fc8a6797ee0b5366e7a3fa5cc57d456ce156e3709",
       "bytes": 4764230
     },
     {
-      "path": "notes/lecture-05/课堂笔记.html",
+      "path": "notes/lecture-05/麦田美股-第5课.html",
       "sha256": "b2c79edb240152ca03c5bf83d8ef2452f6448db10efeb90bbec74de8040e90f5",
       "bytes": 4752116
     }

@@ -100,6 +100,47 @@ def unit_text(notes, ref, run_dir=None):
     return text_of(item) + (' | ' + item['caveat'] if isinstance(item, dict) and item.get('caveat') else '')
 
 
+PAGE_RE = re.compile(r'(?:PPT\s*)?第\s*(\d+)\s*页')
+
+
+def item_role(ref):
+    """Whether this unit is lecturer content or an editor annotation (not part of the item hash)."""
+    if re.fullmatch(r's\d+:n\d+', ref):
+        return 'editor_note'
+    if re.fullmatch(r's\d+:f\d+', ref):
+        return 'frame'
+    if re.fullmatch(r'q\d+', ref):
+        return 'self_test'
+    return 'claim'
+
+
+def item_has_caveat(notes, ref):
+    m = re.fullmatch(r's(\d+):([pen])(\d+)', ref)
+    if not m:
+        return False
+    item = notes['sections'][int(m[1]) - 1][FIELDS[m[2]]][int(m[3])]
+    return isinstance(item, dict) and bool(item.get('caveat'))
+
+
+def frame_paths(notes, run):
+    """Every frame file in the notes, indexed by the PPT page number in its caption."""
+    paths, by_page = [], {}
+    for s in notes['sections']:
+        for f in s.get('frames') or []:
+            path = str(run / f['path'])
+            paths.append(path)
+            if m := PAGE_RE.search(f.get('caption') or ''):
+                by_page.setdefault(int(m.group(1)), []).append(path)
+    return paths, by_page
+
+
+def cited_frame_paths(text, by_page):
+    out = []
+    for n in PAGE_RE.findall(text or ''):
+        out.extend(by_page.get(int(n), []))
+    return out
+
+
 def item_hashes(notes, run_dir=None):
     return {r: hashlib.sha256(unit_text(notes, r, run_dir).encode('utf-8')).hexdigest()[:16] for r in sorted(refs_in(notes))}
 
@@ -146,6 +187,9 @@ def score(report, notes, limits=None):
     bad_top = sorted(i['ref'] for i in p_items if i['ref'] in top_layer and i['verdict'] in ('unsupported', 'distorted'))
     if bad_top:
         problems.append('Unsupported or distorted takeaway/explainer: ' + ', '.join(bad_top))
+    bad_body = sorted(i['ref'] for i in p_items if i['ref'] not in top_layer and i['verdict'] in ('unsupported', 'distorted'))
+    if bad_body:
+        problems.append('Unsupported or distorted item: ' + ', '.join(bad_body))
     if report.get('mode') == 'light':
         return light_score(precision, p_items, top_layer, problems)
     recall = report.get('recall') or {}
@@ -164,8 +208,14 @@ def score(report, notes, limits=None):
         problems.append('Notes use frames but no recall question was drawn from the visuals')
     p_score = round(sum(PRECISION[i['verdict']] for i in p_items) / len(p_items), 4) if p_items else None
     r_score = round(sum(RECALL[i['verdict']] for i in r_items) / len(r_items), 4) if r_items else None
+    has_bad = bool(bad_top or bad_body)
+    precision_gap = None
     if p_score is None or p_score < limits['min_precision']:
-        problems.append(f'Precision {p_score} below {limits["min_precision"]}')
+        if p_score is None or has_bad:
+            problems.append(f'Precision {p_score} below {limits["min_precision"]}')
+        else:
+            precision_gap = (f'Precision {p_score} is below the {limits["min_precision"]} reference line; '
+                             'no unsupported or distorted items')
     if r_score is None or r_score < limits['min_recall']:
         problems.append(f'Recall {r_score} below {limits["min_recall"]}')
     roles = [precision.get('reviewer'), recall.get('question_author'), recall.get('answerer')]
@@ -175,12 +225,18 @@ def score(report, notes, limits=None):
         status = 'failed'
     elif 'same_agent' in roles:
         status = 'self_checked'
+    elif precision_gap:
+        status = 'passed_with_gaps'
     else:
         status = 'passed'
     misses = [i['id'] for i in r_items if i['verdict'] in ('missing', 'wrong')]
+    known_gaps = [precision_gap] if precision_gap else []
+    known_gaps += [i['ref'] + ' partial' for i in p_items if i['verdict'] == 'partial']
     return {'status': status, 'precision': p_score, 'recall': r_score,
+            'precision_threshold': limits['min_precision'],
             'precision_items': len(p_items), 'recall_items': len(r_items),
             'recall_misses': misses, 'problems': problems, 'roles': roles,
+            'known_gaps': known_gaps,
             'claim': 'Scores restate reviewer judgments; they do not prove the reviewers read everything.'}
 
 
@@ -271,20 +327,35 @@ def prepare(args):
         refs = [r for r in refs if is_top(r)]
     # Self-test answers are checked against the section they point back to.
     quiz_section = {f'q{j}': t.get('section') for j, t in enumerate(notes.get('self_test', []), 1)}
+    all_frames, by_page = frame_paths(notes, run)
     sections = {}
     for i, s in enumerate(notes['sections'], 1):
         mine = [r for r in refs if r.startswith(f's{i}:') or quiz_section.get(r) == i]
         if not mine:
             continue
-        frames = sorted({s['frames'][int(r.split(':f')[1])]['path'] for r in mine if ':f' in r})
+        # Attach every frame in this section (and any page an item names, e.g. "PPT 第11页"),
+        # including --only-stale packets that have no stale :f ref — otherwise a supported
+        # body item can be marked partial just because the slide left the packet.
+        frames = []
+        if not args.light:
+            frames = [str(run / f['path']) for f in (s.get('frames') or [])]
+            for r in mine:
+                frames.extend(cited_frame_paths(unit_text(notes, r, run), by_page))
+            frames = list(dict.fromkeys(frames))
         sections[f's{i}'] = {'title': s['title'], 'time': f"{stamp(s['start'])}-{stamp(s['end'])}",
                              'transcript': [f"[{x} {stamp(rows[x]['start'])}] {rows[x]['text']}" for x in s['source_ids'] if x in rows],
-                             'frames_to_check': [str(run / f) for f in frames]}
+                             'frames_to_check': frames}
+    if not args.light and any(not re.match(r's\d+:', r) and not quiz_section.get(r) for r in refs) and all_frames:
+        sections['transcript.txt'] = {'title': 'Full lecture (map, summary, and items without a section)',
+                                      'time': '', 'transcript': [], 'frames_to_check': list(all_frames)}
     items = []
     for r in refs:
         sec = re.match(r's(\d+):', r)
         context = f's{sec[1]}' if sec else (f's{quiz_section[r]}' if quiz_section.get(r) else 'all sections' if args.light else 'transcript.txt')
-        items.append({'ref': r, 'hash': hashes[r], 'context': context, 'text': unit_text(notes, r, run)})
+        item = {'ref': r, 'hash': hashes[r], 'context': context, 'text': unit_text(notes, r, run), 'role': item_role(r)}
+        if item_has_caveat(notes, r):
+            item['has_caveat'] = True
+        items.append(item)
     write(out / 'precision/items.json', dump({'mode': 'light' if args.light else 'full', 'sections': sections, 'items': items}) + '\n')
     if args.light:
         # Every section has a takeaway, so `sections` already carries the whole transcript; no frames, no recall packets.
@@ -425,10 +496,11 @@ def decide(entries, writer, skill_version, source_type, every=AUDIT_EVERY):
     if not full:
         return {'mode': 'full', 'reason': f'approval: no full eval yet for {combo}'}
     last = mine[full[-1]]
-    if last['status'] != 'passed':
-        passed = [i for i in full if mine[i]['status'] == 'passed']
+    approved = {'passed', 'passed_with_gaps'}
+    if last['status'] not in approved:
+        passed = [i for i in full if mine[i]['status'] in approved]
         since = mine[passed[-1] + 1:] if passed else mine
-        return {'mode': 'full', 'reason': f"latest full eval ({last['run']}) is {last['status']}; stay on full evals until one passes",
+        return {'mode': 'full', 'reason': f"latest full eval ({last['run']}) is {last['status']}; stay on full evals until one is deliverable",
                 'backfill': [e['run'] for e in since if e['mode'] == 'light']}
     light = sum(1 for e in mine[full[-1] + 1:] if e['mode'] == 'light')
     if light >= every - 1:
@@ -556,7 +628,17 @@ PRECISION_PROMPT = """# Precision review (packet: items.json)
 You check classroom notes against the lecture. You did not write them. Read only items.json and transcript.txt
 in this folder and the image files listed under frames_to_check. Each item's `context` names the section in
 `sections` whose transcript lines and frames to judge it against; items whose context is transcript.txt
-(course map, summary, self-test without a section) are checked against the full transcript. Judge each `text`:
+(course map, summary, self-test without a section) are checked against the full transcript and against
+`sections["transcript.txt"].frames_to_check` when that list is present. Use the frames to verify numbers,
+tables, and slide wording even if they are not spoken.
+
+Each item may include `role` (`claim`, `editor_note`, `frame`, `self_test`) and `has_caveat`. Judge the
+lecturer's claims in `text`. An `editor_note`, or a clearly marked caveat or correction (including ASR
+corrections of names or abbreviations), is an editor annotation: do not mark it partial or unsupported
+merely because the annotation is not in the transcript or frames, unless that annotation is written as
+the lecturer's own words.
+
+Judge each `text`:
 
 - supported: fully backed by the transcript/frames
 - partial: partly backed, strength or tone changed, or editor inference presented as the lecturer's words
@@ -624,7 +706,12 @@ Manual steps, only if `review` cannot run here:
      --writer-model <writer> --reviewer-model <precision model> --author-model <author model> --answerer-model <answerer model>
 
 After editing notes do not rerun everything: `stale` lists changed items, `prepare --only-stale <eval>` builds a
-delta precision packet, re-answer and re-grade only the stale recall ids, then `merge --update <run>/fidelity-eval.json`.
+delta precision packet (it still attaches the frames needed to judge those items), re-answer and re-grade only
+the stale recall ids, then `merge --update <run>/fidelity-eval.json`.
+
+Any unsupported or distorted item fails. Partial items may ship; list them in known_gaps. If there is no
+unsupported or distorted item and no other hard failure, a precision score below the 0.95 reference line
+is recorded as `passed_with_gaps`; the numeric precision is kept. Do not change reviewer verdicts to clear the line.
 """
 LIGHT_RUN_MD = """# Light fidelity check (production)
 
@@ -638,7 +725,9 @@ Then:
    python3 fidelity_eval.py score --notes {notes} --eval <run>/fidelity-eval.json --ledger <ledger> --skill-version <v> --source-type <type>
 
 Any unsupported or distorted item fails: fix the notes, then `prepare --light --only-stale <run>/fidelity-eval.json`
-and `merge --update`. Partial items may ship; list them in known_gaps.
+and `merge --update`. Partial items may ship; list them in known_gaps. In a full eval, if there is no
+unsupported or distorted item and no other hard failure, a precision score below the 0.95 reference line
+is recorded as `passed_with_gaps`; the numeric precision is kept. Do not change reviewer verdicts to clear the line.
 """
 
 

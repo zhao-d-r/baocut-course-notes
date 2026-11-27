@@ -1,0 +1,16 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- AntV Infographic wrapper used by render.py antv; {{DSL}} is replaced with the escaped infographic syntax. -->
+<style>html,body{margin:0;background:#fffdf8} #container{width:var(--w);height:var(--h)}</style>
+<script src="antv-infographic.min.js"></script>
+</head><body>
+<div id="container"></div>
+<script>
+  window.__ready = new Promise((resolve) => {
+    const ig = new AntVInfographic.Infographic({ container: '#container', width: '100%', height: '100%' });
+    ig.render({{DSL}});
+    // Rendering and icon fetches are asynchronous; Chrome's virtual time budget makes this wait cheap.
+    setTimeout(resolve, 4000);
+  });
+</script>
+</body></html>

@@ -15,7 +15,7 @@ SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><text x="1" y
 
 def v3_notes():
     return {
-        'schema_version': 3, 'title': '测试课', 'limitations': ['测试样本'], 'read_chunks': ['chunk-0001', 'chunk-0002'],
+        'schema_version': 3, 'title': '测试课', 'short_title': '测试课 第1课', 'limitations': ['测试样本'], 'read_chunks': ['chunk-0001', 'chunk-0002'],
         'map': {'path': 'visuals/map.svg', 'alt': '课程地图'}, 'summary': ['平均数是总量除以样本数。'], 'summary_terms': ['平均数'],
         'groups': [{'start': 1, 'label': '一 / 理解'}],
         'sections': [

@@ -2,7 +2,7 @@
 """Rebuild lecture 3 as a notes-v3 layered page for side-by-side comparison.
 
 Every full-note text, frame, supplement, self-test item and limitation is migrated
-from notes/lecture-03/课堂笔记.html (the 2026-10-22 delivered version). layer.json adds
+from notes/lecture-03/麦田美股-第3课.html (the 2026-10-22 delivered version). layer.json adds
 the course map and explainers, and moves evidence-boundary clauses verbatim from a
 paragraph's body into its caveat (plus a few recorded word edits). The migration check
 fails the build unless every original clause and frame is still on the new page.
@@ -21,7 +21,7 @@ REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO / 'skills/baocut-course-notes/scripts'))
 import layered  # noqa: E402
 
-ORIGINAL = REPO / 'notes/lecture-03/课堂笔记.html'
+ORIGINAL = REPO / 'notes/lecture-03/麦田美股-第3课.html'
 HERE = Path(__file__).resolve().parent
 
 

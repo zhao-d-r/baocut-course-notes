@@ -43,7 +43,18 @@ eli5 的做法是：假设读者对主题一无所知，用大图、少字解释
 4. `python3 <skill>/scripts/illustrate.py fit --in visuals/raw-s03.png --out visuals/s03.jpg` 压缩（默认最长边 1280，约 0.4–0.6 MB）。
 5. 自己先看一遍：图中文字是否与 labels 逐字一致、有无多出来的字或数字、箭头是否画出了笔记没有的因果。有错就重新生成，不要手工涂改。课程地图用 `--ref map`（横版 3:2）。
 
-生成图同样要经过精度评审：评审对照 labels 与原句逐字核对，图里任何清单外的文字或因果都按 `distorted` 处理。没有生图工具时用下面的 SVG 卡片。
+生成图同样要经过精度评审：评审对照 labels 与原句逐字核对，图里任何清单外的文字或因果都按 `distorted` 处理。没有生图工具或额度用完时，用下面的代码图解。
+
+### 代码图解（没有生图工具或额度用完时）
+
+模型不直接出像素，而是写"画法"，由无头 Chrome 渲染：不占生图额度，图上的字由浏览器排版，不会写错；代价是插画感弱于生图模型。具体做法在独立的 code-visuals skill 里（与本 skill 放在同一个仓库的 `skills/code-visuals/`），任何写作工具都能用。
+
+1. 同上写好 `visual.refs` 和 `visual.labels`。
+2. 按 code-visuals 的 SKILL.md 选引擎：
+   - 步骤、对比、层级、时间线、循环、关系图：写 AntV 语法 `visuals/draw-s03.infographic`。语法和可用模板见 code-visuals 的 `references/antv.md`。
+   - 模板装不下的（包括课程地图）：复制 code-visuals 的 `assets/freeform.html`，写成 `visuals/draw-s03.html`。
+3. `python3 <skill>/scripts/illustrate.py draw --notes <run>/notes.json --ref s3 --src visuals/draw-s03.infographic --out visuals/raw-s03.png`：渲染、按内容裁边，并逐段核对图上文字只来自 labels、不出界、不重叠。有 problems 就改源文件重跑。
+4. 打开 PNG 看一眼箭头和分组有没有画出笔记里没有的关系，然后 `illustrate.py fit` 压成 `visuals/s03.jpg`。源文件留在 visuals 里，方便以后改字重出。
 
 ### SVG 规范
 

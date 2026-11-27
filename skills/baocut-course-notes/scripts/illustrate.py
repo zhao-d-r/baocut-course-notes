@@ -2,6 +2,9 @@
 """Hand-drawn infographic explainers made with an image model (e.g. Codex image generation).
 
   prompt --notes N --ref s3|map      print the generation prompt for one explainer
+  draw   --notes N --ref s3 --src visuals/draw-s03.infographic|.html --out visuals/raw-s03.png
+         code-drawn explainer through the code-visuals skill (AntV syntax or HTML + rough.js), rendered by
+         headless Chrome and checked against visual.labels; for when no image tool or quota is left
   fit    --in raw.png --out visuals/s03.jpg   downscale/compress for the page (needs ffmpeg)
 
 Order of work: write the explainer's facts into the full notes first, then set visual.refs and
@@ -10,8 +13,13 @@ prompt, then fit. Image models misspell and invent; the precision review checks 
 against labels and the transcript, so keep labels few and short.
 """
 import argparse
+import json
+import os
 import shutil
 import subprocess
+import sys
+import tempfile
+from pathlib import Path
 
 from course_notes import dump, read_json, safe_path, text_of
 from reading_layout import FIELDS
@@ -53,6 +61,36 @@ def prompt(args):
     print(text if args.plain else dump({'ref': args.ref, 'size': size, 'target': visual.get('path'), 'prompt': text}))
 
 
+CODE_VISUALS = [Path(__file__).resolve().parents[2] / 'code-visuals', Path.home() / '.claude/skills/code-visuals']
+
+
+def draw(args):
+    """Code-drawn explainer via the code-visuals skill: no image model, so no image quota and no misspelt words."""
+    note = read_json(args.notes)
+    _, visual, _, _ = section_context(note, args.ref)
+    labels = visual.get('labels')
+    if not labels:
+        raise ValueError(f'Write {args.ref} visual.labels first: the exact short phrases the picture may show, taken from the full notes')
+    skill = next((d for d in CODE_VISUALS if (d / 'scripts' / 'render.py').exists()), None)
+    if not skill:
+        raise ValueError('code-visuals skill not found; install it next to this skill or in ~/.claude/skills/code-visuals')
+    src = safe_path(args.src)
+    mode = 'antv' if src.suffix == '.infographic' else 'page'
+    size = (['--width', '1536', '--height', '1024'] if args.ref == 'map' and mode == 'page' else
+            ['--width', '1200', '--height', '800'] if args.ref == 'map' else [])
+    with tempfile.NamedTemporaryFile('w', suffix='.json', delete=False, encoding='utf-8') as f:
+        json.dump(labels, f, ensure_ascii=False)
+    try:
+        res = subprocess.run([sys.executable, str(skill / 'scripts' / 'render.py'), mode, '--dsl' if mode == 'antv' else '--html',
+                              str(src), '--labels-json', f.name, '--out', str(safe_path(args.out)), *size],
+                             capture_output=True, text=True, timeout=400)
+    finally:
+        os.unlink(f.name)
+    print(res.stdout.strip())
+    if res.returncode:
+        raise ValueError(res.stderr.strip() or 'render failed')
+
+
 def fit(args):
     if not shutil.which('ffmpeg'):
         raise ValueError('ffmpeg not found; compress the image another way to under 3 MB')
@@ -71,12 +109,14 @@ def main():
     sub = p.add_subparsers(dest='command', required=True)
     pr = sub.add_parser('prompt'); pr.add_argument('--notes', required=True); pr.add_argument('--ref', required=True)
     pr.add_argument('--plain', action='store_true', help='print only the prompt text')
+    dr = sub.add_parser('draw'); dr.add_argument('--notes', required=True); dr.add_argument('--ref', required=True)
+    dr.add_argument('--src', required=True, help='.infographic (AntV syntax) or .html (freeform page)'); dr.add_argument('--out', required=True)
     ft = sub.add_parser('fit'); ft.add_argument('--in', dest='input', required=True); ft.add_argument('--out', required=True)
     ft.add_argument('--max', type=int, default=1280, help='longest side in px')
     args = p.parse_args()
     try:
-        {'prompt': prompt, 'fit': fit}[args.command](args)
-    except (ValueError, KeyError, IndexError, OSError) as exc:
+        {'prompt': prompt, 'draw': draw, 'fit': fit}[args.command](args)
+    except (ValueError, KeyError, IndexError, OSError, subprocess.TimeoutExpired) as exc:
         p.exit(1, 'Error: ' + str(exc) + '\n')
 
 

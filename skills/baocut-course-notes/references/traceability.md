@@ -31,7 +31,7 @@
     {"id": "frames", "path": "frames/index.json", "depends_on": [], "role": "source", "origin": "generated"},
     {"id": "notes", "path": "notes.json", "depends_on": ["index", "frames"]},
     {"id": "renderer", "path": "/abs/skill/scripts/layered.py", "depends_on": [], "role": "tool"},
-    {"id": "html", "path": "课堂笔记.html", "depends_on": ["notes", "renderer"]},
+    {"id": "html", "path": "市场概述-2026-11-03.html", "depends_on": ["notes", "renderer"]},
     {"id": "fidelity_eval", "path": "fidelity-eval.json", "depends_on": ["notes", "transcript", "frames"]}
   ],
   "log": [{"at": "...", "occurred_at": "...", "stage": "asr", "status": "reused", "attempt": null, "job_id": null, "detail": "复用已有转写", "evidence": "transcript.json"}],

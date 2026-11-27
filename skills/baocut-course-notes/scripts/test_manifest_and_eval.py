@@ -60,6 +60,24 @@ class EvalTest(unittest.TestCase):
             item['from'] = 'transcript'
         self.assertIn('visuals', ' '.join(fe.score(report, self.notes)['problems']))
 
+    def test_partials_below_reference_line_are_passed_with_gaps(self):
+        for item in self.report['precision']['items'][:2]:
+            item['verdict'] = 'partial'
+        result = fe.score(self.report, self.notes)
+        self.assertLess(result['precision'], fe.DEFAULTS['min_precision'])
+        self.assertEqual(result['precision_threshold'], 0.95)
+        self.assertEqual(result['status'], 'passed_with_gaps')
+        self.assertFalse(result['problems'])
+        self.assertTrue(any('reference line' in g for g in result['known_gaps']))
+
+    def test_unsupported_body_item_fails_even_with_high_average(self):
+        self.report['precision']['items'] += [{'ref': 's1:p0', 'verdict': 'supported', 'evidence': 'a'}] * 60
+        self.report['precision']['items'].append({'ref': 's1:n0', 'verdict': 'unsupported', 'evidence': 'a'})
+        result = fe.score(self.report, self.notes)
+        self.assertGreaterEqual(result['precision'], 0.95)
+        self.assertEqual(result['status'], 'failed')
+        self.assertIn('s1:n0', ' '.join(result['problems']))
+
     def test_unknown_ref_rejected(self):
         self.report['precision']['items'].append({'ref': 's9:p0', 'verdict': 'supported', 'evidence': 'x'})
         with self.assertRaisesRegex(ValueError, 'unknown ref'):

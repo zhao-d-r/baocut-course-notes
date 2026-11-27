@@ -31,11 +31,13 @@ description: 把课程视频或已有转写整理成给人阅读学习的高保�
 5. **写完整笔记**。按 [数据合同 v3](references/contract.md) 填 `notes.json`：讲师观点、讲义内容、整理者说明、外部资料分字段；数字、条件、反例和讲师的不确定语气照原样保留。按节写入，读取用 `jq`/脚本取片段，不要反复整份打印 notes.json 或转写。
 6. **做图解层**。按 [分层阅读与图解](references/layered-reading.md)：每节一句 `takeaway`，为值得画的知识点做一张图解并在 `refs` 列出依据条目，再做课程地图。两种做法：
    - 手绘信息图（推荐，需生图工具）：先写 `visual.labels`（图上全部文字，取自完整笔记），`illustrate.py prompt --ref s3` 生成提示词，用生图工具出图，`illustrate.py fit` 压缩。
-   - SVG 卡片：`svgcard.py build --spec card.json --out visuals/s03.svg`；手写 SVG 用 `svgcard.py lint` 检查。
+   - 代码图解（没有生图工具或生图额度用完时）：同样先写 `visual.labels`，按 code-visuals skill 写 `visuals/draw-s03.infographic`（AntV 模板，首选）或 `visuals/draw-s03.html`（rough.js 手绘页），`illustrate.py draw --src … --out visuals/raw-s03.png` 渲染并自动核对文字，再 `illustrate.py fit`。不占生图额度，字不会写错。
+   - SVG 卡片：只在前两种都做不了时用。`svgcard.py build --spec card.json --out visuals/s03.svg`；手写 SVG 用 `svgcard.py lint` 检查。
 7. **校验并渲染**。
    `python3 <skill>/scripts/course_notes.py validate --notes <run>/notes.json --index <run>/chunks/index.json`
    一次列出全部问题和字段路径（覆盖、引用、占位符、图解、编码），改到 `passed` 再渲染：
-   `python3 <skill>/scripts/course_notes.py render --notes <run>/notes.json --index <run>/chunks/index.json --out <run>/课堂笔记.html`
+   `python3 <skill>/scripts/course_notes.py render --notes <run>/notes.json --index <run>/chunks/index.json`
+   页面写到 `<run>/<short_title>.html`，路径见输出的 `output`；后面的命令和 manifest 都用这个路径。
 8. **保真评测（外部模型）**。先问台账本课跑轻检还是全量（课程根放 `eval-ledger.json`；skill 版本自动取本 skill 的 git 提交）：
    `python3 <skill>/scripts/fidelity_eval.py mode --ledger <课程根>/eval-ledger.json --writer-model <写作模型> --source-type <youtube|bilibili|lecture|file>`
    `<写作模型>` 写启动你的 CLI 用的模型 ID（如 `gpt-6.1-sol`、`grok-4.7-high`），每课都用同一个写法：台账按这个字符串认组合，写成“Grok 4.7”会被当成新组合重新准入。
@@ -44,7 +46,7 @@ description: 把课程视频或已有转写整理成给人阅读学习的高保�
    它自动选另一家模型的 CLI（GPT 写的交给 `cursor-agent` + Grok，其余交给 `codex exec` + GPT），每个角色一个独立进程，按顺序跑出题/精度 → 盲答 → 判分，检查输出、记 token 到 `eval/usage.json`，最后 merge；中断后重跑只补缺的角色。不要自己拼评审命令、轮询评审进程或在自己的会话里用子代理代评。跑完看一眼判分：评审读错原文（例如误读画面上的文字）时，在 `known_gaps` 写明，不要改分。
    `python3 <skill>/scripts/fidelity_eval.py score --notes <run>/notes.json --eval <run>/fidelity-eval.json --ledger <同上> --source-type <同上>` 记进台账。`unsupported`/`distorted` 必须改；`partial` 可交付但写进 known_gaps。改了笔记只复核变化的条目：`stale` → `prepare --only-stale <run>/fidelity-eval.json --out <run>/eval-r2`（轻检加 `--light`）→ `review … --dir <run>/eval-r2 --update <run>/fidelity-eval.json`。细则见 [保真评测](references/fidelity-eval.md)。
 9. **页面检查**。
-   `python3 <skill>/scripts/check_html.py <run>/课堂笔记.html`
+   `python3 <skill>/scripts/check_html.py <run>/<short_title>.html`
    静态检查（锚点、本地链接、外部资源、图片解码、阅读模式控件）总会做；找到 headless Chrome 时再在 390/1280 宽度检查溢出、脚本错误、坏图并操作切换/展开、各截一张图，结果写入 manifest `status.browser_check`。Chrome 在沙箱里起不来，这条命令直接申请在沙箱外运行（见下文“需要在沙箱外运行的命令”）。仍然没有浏览器就如实写 `static_only`，不要尝试其他浏览器或截屏方案。
 10. **冻结并交付**。`python3 <skill>/scripts/manifest.py freeze --run <run> --reason "<为什么出这一版>" --delivered`。交付时按视频给出文件路径、评测分数（含评审模型；轻检要写明“召回未测”并附该组合最近一次全量评测的分数）和仍存在的缺口；没做的检查直接说没做。
 

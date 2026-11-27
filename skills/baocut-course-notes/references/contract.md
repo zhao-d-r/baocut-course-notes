@@ -5,11 +5,13 @@
 - 起步用 `course_notes.py scaffold` 生成绑定分块的骨架（不要从零手写或另写生成器）；`TODO(scaffold)` 占位会被校验拒绝，`read_chunks` 必须由读过转写的人或代理填写。
 - 写完用 `course_notes.py validate` 一次拿到全部问题，每条带字段路径（如 `sections[14].visual`、`sections[3].source_ids`）；不必读脚本源码猜规则。下面的示例和 `examples/synthetic`、`scripts/test_layered.py` 中的 `v3_notes()` 都是能通过校验的完整样例。
 - `visual` 可以是 SVG，也可以是生成的 PNG/JPEG/WebP 信息图；位图必须带 `labels`：图中出现的全部文字，逐条列出，例如 `{"path": "visuals/s01.jpg", "alt": "…", "refs": ["p0"], "labels": ["断网以后", "设计重试"]}`。
+- `short_title` 是视频名称的缩写，最多 30 个字符，渲染时用作 HTML 文件名（空格和路径字符换成 `-`）。同系列的视频要保留课次或日期，比如 `麦田美股-第3课`、`市场概述 2026-11-03`；`课堂笔记`、`笔记` 这类通用名会被校验拒绝，因为文件多了就分不清。
 
 ```json
 {
   "schema_version": 3,
   "title": "麦田美股交易 · 第3课：策略、技术指标与时间框架",
+  "short_title": "麦田美股-第3课",
   "course_title": "课程名", "issue": "第3课 / 5",
   "heading": "页面主标题", "subtitle": "这一课解决什么问题",
   "source_url": "https://www.youtube.com/watch?v=VIDEO_ID",
@@ -70,7 +72,7 @@
 
 ## 运行目录
 
-保留原始导出、`chunks/`、`notes.json`、`frames/`、`visuals/`、`课堂笔记.html`、`fidelity-eval.json`、`manifest.json`。来源、依赖、阶段日志、问题与修复、交付版本都写在 manifest（见 [可追溯运行](traceability.md)）。
+保留原始导出、`chunks/`、`notes.json`、`frames/`、`visuals/`、`<short_title>.html`、`fidelity-eval.json`、`manifest.json`。来源、依赖、阶段日志、问题与修复、交付版本都写在 manifest（见 [可追溯运行](traceability.md)）。
 
 ## 兼容 v2
 

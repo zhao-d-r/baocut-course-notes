@@ -14,7 +14,7 @@
 
 ## 浏览器检查
 
-先跑 `python3 <skill>/scripts/check_html.py <run>/课堂笔记.html`：静态检查锚点/本地链接/外部资源/图片解码/阅读模式控件；有 headless Chrome 时在 390 与 1280 宽度检查溢出、脚本错误、坏图并操作模式切换和全部展开，各截一张 `qa/shot-*.png`，结果自动写入 manifest `status.browser_check`。没有浏览器时结果是 `static_only`——照实写“未测交互”，不要换各种浏览器或截屏方案反复尝试（对照实验里这一项曾吃掉 Codex 主线程一半以上的 token）。
+先跑 `python3 <skill>/scripts/check_html.py <run>/<short_title>.html`：静态检查锚点/本地链接/外部资源/图片解码/阅读模式控件；有 headless Chrome 时在 390 与 1280 宽度检查溢出、脚本错误、坏图并操作模式切换和全部展开，各截一张 `qa/shot-*.png`，结果自动写入 manifest `status.browser_check`。没有浏览器时结果是 `static_only`——照实写“未测交互”，不要换各种浏览器或截屏方案反复尝试（对照实验里这一项曾吃掉 Codex 主线程一半以上的 token）。
 
 有可交互的浏览器工具时，再人工看一遍下面几项，至少桌面（约 1280px）和手机（约 390px）两种宽度：
 

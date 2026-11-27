@@ -1,0 +1,58 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Code-drawn explainer. Copy to visuals/draw-<ref>.html, keep the <style> tokens, replace the body text and paint().
+     Lay out the words with CSS (grid/flex); draw frames, arrows and doodles around them in paint() with kit.*.
+     Render with: illustrate.py draw --notes notes.json --ref <ref> --html visuals/draw-<ref>.html --out visuals/raw-<ref>.png -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Noto+Sans+SC:wght@500;700;900&display=block">
+<style>
+  :root { --paper:#fbf7ee; --ink:#2b2b2b; --blue:#2a62a8; --green:#3c8a5a; --orange:#c0621b; --red:#b8423a; --purple:#6a4fa0; }
+  html, body { margin:0 }
+  body { width:var(--w); height:var(--h); box-sizing:border-box; padding:70px 80px; background:var(--paper); color:var(--ink);
+         font-family:'Noto Sans SC','PingFang SC','Hiragino Sans GB',sans-serif; font-weight:700; position:relative; overflow:hidden;
+         display:flex; flex-direction:column; justify-content:center; gap:110px; }  /* gap > 2×box pad + arrow room */
+  body > *:not(svg) { position:relative; z-index:1 }
+  .title { font-family:'ZCOOL KuaiLe','PingFang SC',sans-serif; font-weight:400; font-size:76px; text-align:center; line-height:1.15 }
+  .head  { font-family:'ZCOOL KuaiLe','PingFang SC',sans-serif; font-weight:400; font-size:54px }
+  .big   { font-size:42px } .mid { font-size:36px } .small { font-size:30px }
+  .row   { display:flex; gap:80px; align-items:flex-start }
+  .col   { display:flex; flex-direction:column; align-items:flex-start; gap:28px; min-width:0 }
+  .doodle { align-self:stretch; height:70px }  /* empty space reserved for a drawing; paint() draws inside it */
+  .blue{color:var(--blue)} .green{color:var(--green)} .orange{color:var(--orange)} .red{color:var(--red)}
+  .note  { font-family:'ZCOOL KuaiLe','PingFang SC',sans-serif; font-weight:400; font-size:52px; text-align:center }
+</style></head>
+<body>
+  <svg id="ink"></svg>
+  <!-- Example (vertical section card). Every word below must be copied exactly from visual.labels. -->
+  <div class="title" id="t">prefill 与 decode</div>
+  <div class="col" id="a">
+    <div class="head blue">① prefill</div>
+    <div class="big">一次处理整个 prompt</div>
+    <div class="doodle" id="a-pic"></div>
+    <div class="mid" id="a-bound">compute bound</div>
+    <div class="small">time to first token</div>
+  </div>
+  <div class="col" id="b">
+    <div class="head orange">② decode</div>
+    <div class="big">逐 token</div>
+    <div class="doodle" id="b-pic"></div>
+    <div class="mid">不断增长的 KV cache</div>
+    <div class="mid" id="b-bound">memory bound</div>
+    <div class="small">time per output token</div>
+  </div>
+  <div class="note" id="n">prefill 和 decode 的瓶颈不同</div>
+<script>
+  // Runs after fonts load and layout settles. kit.box/arrow/banner/underline/circle/line, raw rough.js at kit.rc.
+  window.paint = (k) => {
+    k.box('#a', { color: 'blue', fill: 'lblue' });
+    k.box('#b', { color: 'orange', fill: 'lorange' });
+    k.underline('#a-bound', { color: 'blue' });
+    k.underline('#b-bound', { color: 'orange' });
+    k.arrow('#a', '#b', { color: 'ink', pad: 26 });
+    // Doodles go inside reserved .doodle boxes, so they can never cross words.
+    const a = k.rect('#a-pic'), b = k.rect('#b-pic');
+    for (let i = 0; i < 8; i++) k.square(a.x + i * 62, a.y + 10, 48, { color: 'blue', fill: 'blue' });
+    for (let i = 0; i < 5; i++) k.circle(b.x + 30 + i * 80, b.y + 35, 50, { color: 'orange', fill: i === 4 ? 'orange' : 'lorange' });
+    k.banner('#n');
+  };
+</script>
+</body></html>

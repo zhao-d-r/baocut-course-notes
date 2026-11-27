@@ -8,7 +8,7 @@ import base64
 from pathlib import Path
 
 from course_notes import Problems, esc, figure_source, safe_path, seconds, stamp, text_of
-from reading_layout import FIELDS, emphasize, resolve, supplements
+from reading_layout import FIELDS, emphasize, issue_badge, resolve, supplements
 
 ASSETS = Path(__file__).resolve().parents[1] / 'assets'
 REF_LABELS = {'p': '课堂段落', 'e': '课堂案例', 'n': '整理者说明', 'x': '外部资料', 'f': '原帧'}
@@ -242,7 +242,7 @@ def render(note, run_dir):
     toc += '</nav></details>'
     url = note.get('source_url')
     values = {'TITLE': esc(note['title']), 'COURSE': esc(note.get('course_title', '课程学习笔记')),
-              'ISSUE': esc(note.get('issue', '')), 'HEADING': esc(note.get('heading', note['title'])),
+              'ISSUE': esc(note.get('issue', '')), 'BADGE': issue_badge(note.get('issue')), 'HEADING': esc(note.get('heading', note['title'])),
               'SUBTITLE': esc(note.get('subtitle', '')),
               'META': f'{len(sections)} 节 · {visual_count} 张图解 · {frame_count} 幅原帧 · {len(tests)} 道自测',
               'SOURCE': '<a href="' + esc(url) + '">回看课堂 ↗</a>' if url else '',

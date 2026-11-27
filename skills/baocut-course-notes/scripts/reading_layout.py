@@ -4,6 +4,16 @@ import html
 import re
 from pathlib import Path
 
+def issue_badge(issue):
+    """The big decorative number in the hero: only a short lecture number ("07", "第 8 讲", "L10").
+
+    Writers often put a long label in `issue` ("Breakout Session · Turing Room · 2026-10-14"); shown at
+    140px in an auto-width grid column it squeezed the title to one character per line.
+    """
+    m = re.fullmatch(r'\s*(?:第\s*|L|Lecture\s*)?(\d{1,3})\s*[讲课]?\s*', str(issue or ''), re.I)
+    return m[1].zfill(2) if m else ''
+
+
 FIELDS = {'p': 'paragraphs', 'e': 'examples', 'n': 'editor_notes', 'f': 'frames'}
 
 
@@ -187,7 +197,7 @@ def render(note, layout, note_bytes, base, assets):
         toc += f'<div class="toc-group">复习</div><a href="#self-test">{len(tests)} 道自测</a>'
     toc += '</nav></details>'
     values = {'TITLE': esc(note['title']), 'COURSE': esc(layout.get('course_title', '课程学习笔记')),
-              'ISSUE': esc(layout.get('issue', '')), 'HEADING': esc(layout.get('title', note['title'])),
+              'ISSUE': esc(layout.get('issue', '')), 'BADGE': issue_badge(layout.get('issue')), 'HEADING': esc(layout.get('title', note['title'])),
               'SUBTITLE': esc(layout.get('subtitle', '')), 'META': f'{count} 节 · {len(figures)} 幅配图 · {len(tests)} 道自测',
               'SOURCE': '<a href="' + esc(note['source_url']) + '">回看课堂 ↗</a>' if note.get('source_url') else '',
               'LIMITS': ''.join('<p>' + esc(t) + '</p>' for t in note['limitations']), 'TOC': toc, 'BODY': body,

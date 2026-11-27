@@ -58,6 +58,12 @@ class EditorialTest(unittest.TestCase):
         self.assertNotIn('<script>', first)
         self.assertIn('<details class="quiz-answer">', page)
 
+    def test_issue_badge_only_shows_short_numbers(self):
+        from reading_layout import issue_badge
+        self.assertEqual([issue_badge(x) for x in ('7', '第 8 讲', '第5讲', 'L10', '09')], ['07', '08', '05', '10', '09'])
+        for long in ('Breakout Session · Turing Room · 2026-10-14', '2026', '10/14', '第 2 讲 / 2026-09-28', '', None):
+            self.assertEqual(issue_badge(long), '')
+
     def test_omission_fails_instead_of_silent_loss(self):
         self.data['sections'][0]['flow'] = 'p0 e0 x0 f2:0'
         with self.assertRaisesRegex(ValueError, 'omits'): self.validate()

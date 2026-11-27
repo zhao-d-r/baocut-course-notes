@@ -1,6 +1,7 @@
 {
   "schema_version": 3,
   "title": "从样本到平均数｜合成课堂示例",
+  "short_title": "合成课-平均数",
   "course_title": "离线渲染演示",
   "issue": "DEMO",
   "heading": "从样本到平均数",

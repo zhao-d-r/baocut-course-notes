@@ -65,6 +65,26 @@ class ValidateTest(RunDir):
         with self.assertRaisesRegex(ValueError, 'takeaway'):
             quiet(c.render, Args(notes=self.save(notes), index=self.index, out=self.root / 'o.html'))
 
+    def test_render_names_the_page_after_short_title(self):
+        quiet(c.render, Args(notes=self.save(), index=self.index, out=None))
+        self.assertTrue((self.root / '测试课-第1课.html').is_file())
+
+    def test_explicit_out_still_wins(self):
+        notes = copy.deepcopy(self.notes)
+        del notes['short_title']
+        quiet(c.render, Args(notes=self.save(notes), index=self.index, out=self.root / 'o.html'))
+        self.assertTrue((self.root / 'o.html').is_file())
+
+    def test_short_title_must_abbreviate_the_video_name(self):
+        for bad in (None, '', '课堂笔记', 'x' * 31):
+            notes = copy.deepcopy(self.notes)
+            notes['short_title'] = bad
+            result, _ = quiet(c.validate, Args(notes=self.save(notes), index=self.index, layout=None))
+            self.assertIn('short_title', {p['where'] for p in result['problems']}, bad)
+
+    def test_short_title_cannot_escape_the_run_dir(self):
+        self.assertEqual(c.note_filename({'short_title': '../a/b: c'}), 'a-b-c.html')
+
     def test_valid_notes_pass(self):
         result, _ = quiet(c.validate, Args(notes=self.save(), index=self.index, layout=None))
         self.assertEqual(result['status'], 'passed', result['problems'])
@@ -206,6 +226,48 @@ class EvalPipelineTest(RunDir):
                              writer_model='grok-4.7-high', reviewer_model='gpt-6.1-sol', author_model=None, answerer_model=None))
         self.assertEqual(self.score()[1]['status'], 'passed')
 
+    def test_precision_packet_attaches_all_section_frames_even_when_only_stale(self):
+        # Two frames in s1; a body item that names a page in s1 from s2 (which has no frames of its own).
+        (self.root / 'frame2.png').write_bytes(PNG)
+        self.notes['sections'][0]['frames'].append(
+            {'source_type': 'video_frame', 'path': 'frame2.png', 'time': 20, 'caption': 'PPT第11页 评分表'})
+        self.notes['sections'][1]['paragraphs'] = ['详见 PPT 第11页的评分表。']
+        self.notes['sections'][1]['takeaway'] = '先核对样本。'
+        self.save()
+        packets = self.root / 'frames-pack'
+        quiet(fe.prepare, Args(notes=self.root / 'notes.json', index=self.index, out=packets, per_section=2, seed=0, questions=20,
+                               only_stale=None, light=False))
+        packet = json.loads((packets / 'precision/items.json').read_text(encoding='utf-8'))
+        s1 = {Path(f).name for f in packet['sections']['s1']['frames_to_check']}
+        self.assertEqual(s1, {'frame.png', 'frame2.png'})
+        # Map / unsectioned items get the lecture's frames too.
+        self.assertEqual({Path(f).name for f in packet['sections']['transcript.txt']['frames_to_check']}, s1)
+        by_ref = {i['ref']: i for i in packet['items']}
+        self.assertEqual(by_ref['s1:n0']['role'], 'editor_note')
+        self.assertEqual(by_ref['s1:takeaway']['role'], 'claim')
+        # Incremental re-review of a body item must still attach the section's frames, and cited pages.
+        self.answer_packets(packets)
+        self.merge(packets)
+        self.notes['sections'][0]['paragraphs'] = ['平均数等于总量除以样本数（已核）。']
+        self.save()
+        delta = self.root / 'frames-delta'
+        quiet(fe.prepare, Args(notes=self.root / 'notes.json', index=self.index, out=delta, per_section=2, seed=0, questions=20,
+                               only_stale=self.root / 'fidelity-eval.json', light=False))
+        delta_pack = json.loads((delta / 'precision/items.json').read_text(encoding='utf-8'))
+        refs = [i['ref'] for i in delta_pack['items']]
+        self.assertIn('s1:p0', refs)
+        self.assertFalse(any(':f' in r for r in refs), refs)
+        self.assertEqual({Path(f).name for f in delta_pack['sections']['s1']['frames_to_check']}, {'frame.png', 'frame2.png'})
+        # A stale s2 paragraph that names 第11页 still receives that slide.
+        self.notes['sections'][1]['paragraphs'] = ['详见 PPT 第11页的评分表（已核）。']
+        self.save()
+        cited = self.root / 'frames-cited'
+        quiet(fe.prepare, Args(notes=self.root / 'notes.json', index=self.index, out=cited, per_section=2, seed=0, questions=20,
+                               only_stale=self.root / 'fidelity-eval.json', light=False))
+        cited_pack = json.loads((cited / 'precision/items.json').read_text(encoding='utf-8'))
+        self.assertIn('s2:p0', [i['ref'] for i in cited_pack['items']])
+        self.assertEqual({Path(f).name for f in cited_pack['sections']['s2']['frames_to_check']}, {'frame2.png'})
+
     def test_light_check_is_top_layer_only_and_recorded_in_ledger(self):
         self.save()
         packets = self.root / 'light'
@@ -303,6 +365,7 @@ class EvalPipelineTest(RunDir):
         self.assertEqual(decide([])['mode'], 'full')
         entries = [entry(1, 'full', 'passed')]
         self.assertEqual(decide(entries)['mode'], 'light')
+        self.assertEqual(decide([entry(1, 'full', 'passed_with_gaps')])['mode'], 'light')
         self.assertEqual(decide(entries, skill='v2')['mode'], 'full')  # new skill version needs its own approval
         self.assertEqual(fe.decide(entries, 'Grok 4.7-High', 'v1', 'lecture')['mode'], 'light')  # same model, other spelling
         entries += [entry(n, 'light', 'light_checked') for n in range(2, 6)]
@@ -340,6 +403,26 @@ class EvalPipelineTest(RunDir):
                              capture_output=True, text=True)
         self.assertNotEqual(out.returncode, 0)
         self.assertIn('labels', out.stderr)
+
+    @unittest.skipUnless(any(Path(x).exists() or shutil.which(x) for x in
+                             ['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', 'google-chrome', 'chromium']), 'needs Chrome')
+    def test_code_drawn_explainer_rejects_words_outside_labels(self):
+        notes = copy.deepcopy(self.notes)
+        notes['sections'][0]['visual'] = {'path': 'visuals/s01.jpg', 'alt': '均分', 'refs': ['p0'], 'labels': ['平均数', '总量 ÷ 样本数']}
+        self.save(notes)
+        (self.root / 'visuals').mkdir(exist_ok=True)
+        page = ('<html><head></head><body><div class="t" style="font-size:60px">平均数</div>'
+                '<div id="x" style="font-size:40px;margin:80px">{}</div><script>window.paint=k=>k.box("#x")</script></body></html>')
+        cmd = [sys.executable, '-B', str(HERE / 'illustrate.py'), 'draw', '--notes', str(self.root / 'notes.json'), '--ref', 's1',
+               '--src', str(self.root / 'visuals' / 'draw-s01.html'), '--out', str(self.root / 'visuals' / 'raw-s01.png')]
+        c.write(self.root / 'visuals' / 'draw-s01.html', page.format('总量 ÷ 样本数'))
+        ok = subprocess.run(cmd, capture_output=True, text=True)
+        self.assertEqual(ok.returncode, 0, ok.stderr + ok.stdout)
+        self.assertTrue((self.root / 'visuals' / 'raw-s01.png').exists())
+        c.write(self.root / 'visuals' / 'draw-s01.html', page.format('总量除以样本数'))
+        bad = subprocess.run(cmd, capture_output=True, text=True)
+        self.assertNotEqual(bad.returncode, 0)
+        self.assertIn('总量除以样本数', bad.stdout)
 
 
 if __name__ == '__main__':

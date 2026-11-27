@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Delivery checks for a rendered notes page, in one command.
 
-  check_html.py <run>/课堂笔记.html [--out-dir <run>/qa] [--chrome PATH] [--no-browser]
+  check_html.py <run>/<short_title>.html [--out-dir <run>/qa] [--chrome PATH] [--no-browser]
 
 Static checks always run: internal anchors and local links resolve, no external resources,
 embedded images decode, layered controls exist. If headless Chrome/Chromium is found, the page

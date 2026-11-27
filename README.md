@@ -41,7 +41,9 @@ python3 tools/install_skill.py
 python3 tools/install_skill.py --dest ~/.codex/skills/baocut-course-notes
 ```
 
-也可以手动把整个 `skills/baocut-course-notes` 文件夹放入 Agent 支持的 Skill 目录，保留其中相对结构。不要只复制 SKILL.md。本轮只在隔离临时目录验证安装和拒绝覆盖，未修改本机现有 Agent 安装。
+也可以手动把整个 `skills/baocut-course-notes` 文件夹放入 Agent 支持的 Skill 目录，保留其中相对结构。不要只复制 SKILL.md。
+
+图解备选：`skills/code-visuals` 是独立的第二个 Skill，让只会输出文字的模型也能画出图解：写 AntV Infographic 语法或 HTML+rough.js，由本机无头 Chrome 渲染，并自动核对图上文字。没有生图工具或生图额度用完时，`illustrate.py draw` 会调用它。把它放在 `baocut-course-notes` 旁边的同一个 Skill 目录（例如 `~/.agents/skills/code-visuals`），需要本机有 Chrome 或 Chromium。本轮只在隔离临时目录验证安装和拒绝覆盖，未修改本机现有 Agent 安装。
 
 ## 如何调用
 
@@ -79,8 +81,10 @@ python3 skills/baocut-course-notes/scripts/course_notes.py chunks --input my-run
 4. 渲染详细 HTML：
 
 ```sh
-python3 skills/baocut-course-notes/scripts/course_notes.py render --notes my-run/notes.json --index my-run/chunks/index.json --out my-run/notes.html
+python3 skills/baocut-course-notes/scripts/course_notes.py render --notes my-run/notes.json --index my-run/chunks/index.json
 ```
+
+页面写到 `my-run/<short_title>.html`：`short_title` 是视频名称的缩写，这样不同视频的文件一眼能分清。
 
 5. 用 `scripts/fidelity_eval.py prepare` 生成评审包，交给**另一家模型**做[保真评测](skills/baocut-course-notes/references/fidelity-eval.md)（精度/召回），`merge` 汇总并计分，改稿后只复核变化条目；用 `scripts/manifest.py` 记录来源、阶段、问题与冻结版本（见[可追溯运行](skills/baocut-course-notes/references/traceability.md)）。
 
@@ -97,7 +101,7 @@ BaoCut 的应用内 `app-release.json` 可能滞后；本次它写 2.0.0 build 5
 ## 功能与文件
 
 - `skills/baocut-course-notes/`：完整 Skill，包含 37 个源文件。
-- `examples/lecture-03-layered/`：第3课分层样板。完整笔记逐字迁移自 `notes/lecture-03/课堂笔记.html`，新增课程地图与 17 张图解，并把正文里的证据边界说明逐句移到“核对与边界”小字，附独立精度/迁移召回评测；`python3 examples/lecture-03-layered/build.py` 可重建并做迁移校验。
+- `examples/lecture-03-layered/`：第3课分层样板。完整笔记逐字迁移自 `notes/lecture-03/麦田美股-第3课.html`，新增课程地图与 17 张图解，并把正文里的证据边界说明逐句移到“核对与边界”小字，附独立精度/迁移召回评测；`python3 examples/lecture-03-layered/build.py` 可重建并做迁移校验。
 - `examples/synthetic/`：原创合成输入、布局、示意图及静态预览。
 - `tools/`：离线演示、拒绝覆盖的 Skill 安装工具及包校验工具。
 - `docs/source-manifest.json`：当前源快照及分享副本 SHA-256，不含个人路径。

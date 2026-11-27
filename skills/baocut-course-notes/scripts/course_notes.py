@@ -8,6 +8,7 @@ import json
 import math
 import os
 from pathlib import Path
+import re
 import tempfile
 
 
@@ -42,6 +43,16 @@ def seconds(x):
 
 
 PLACEHOLDER = 'TODO(scaffold)'
+GENERIC_NAMES = {'课堂笔记', '笔记', '总结', 'notes'}
+MAX_NAME_CHARS = 30
+
+
+def note_filename(note):
+    """<short_title>.html, so pages from different videos can be told apart by file name."""
+    name = re.sub(r'[\s/\\:*?"<>|]+', '-', str(note.get('short_title') or '')).strip('-.')
+    if not name or name.lower() in GENERIC_NAMES or len(name) > MAX_NAME_CHARS:
+        raise ValueError(f'short_title must abbreviate the video name (it names the HTML file), at most {MAX_NAME_CHARS} characters')
+    return name + '.html'
 
 
 class Problems(list):
@@ -234,6 +245,8 @@ def build(args, problems):
     note_path = safe_path(args.notes)
     note, index = read_json(note_path), read_json(args.index)
     placeholders(note, '', problems)
+    if note.get('schema_version') == 3 and not getattr(args, 'out', None):
+        problems.attempt('short_title', note_filename, note)
     expected_chunks = {r['id'] for r in index['chunks']}
     if set(note.get('read_chunks', [])) != expected_chunks:
         problems.append(('read_chunks', ValueError('Reading ledger incomplete or contains unknown chunks')))
@@ -338,9 +351,10 @@ def render(args):
     page, report = build(args, problems)
     if problems:
         raise problems[0][1]
-    write(args.out, page)
-    print(dump({'output': str(safe_path(args.out)), **report}))
-    log_stage(safe_path(args.notes).parent, 'render', 'completed', f'{report["sections"]} sections', str(safe_path(args.out)))
+    out = safe_path(args.out) if args.out else safe_path(args.notes).parent / note_filename(read_json(args.notes))
+    write(out, page)
+    print(dump({'output': str(out), **report}))
+    log_stage(safe_path(args.notes).parent, 'render', 'completed', f'{report["sections"]} sections', str(out))
 
 
 def validate(args):
@@ -377,7 +391,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     sub = p.add_subparsers(dest='command', required=True)
     c = sub.add_parser('chunks'); c.add_argument('--input', required=True); c.add_argument('--out', required=True); c.set_defaults(fn=chunks)
-    r = sub.add_parser('render'); r.add_argument('--notes', required=True); r.add_argument('--index', required=True); r.add_argument('--out', required=True); r.add_argument('--layout'); r.add_argument('--require-layout', action='store_true'); r.set_defaults(fn=render)
+    r = sub.add_parser('render'); r.add_argument('--notes', required=True); r.add_argument('--index', required=True); r.add_argument('--out', help='default: <notes dir>/<short_title>.html'); r.add_argument('--layout'); r.add_argument('--require-layout', action='store_true'); r.set_defaults(fn=render)
     v = sub.add_parser('validate', help='report every notes problem at once'); v.add_argument('--notes', required=True); v.add_argument('--index', required=True); v.add_argument('--layout'); v.set_defaults(fn=validate)
     s = sub.add_parser('scaffold', help='v3 skeleton from chunks/index.json'); s.add_argument('--index', required=True); s.add_argument('--out', required=True); s.add_argument('--title'); s.add_argument('--source-url'); s.set_defaults(fn=scaffold)
     args = p.parse_args()
